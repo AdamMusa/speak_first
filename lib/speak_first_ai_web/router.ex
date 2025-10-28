@@ -72,4 +72,44 @@ defmodule SpeakFirstAiWeb.Router do
     post "/users/log-in", UserSessionController, :create
     delete "/users/log-out", UserSessionController, :delete
   end
+
+  scope "/admin", SpeakFirstAiWeb do
+    pipe_through [:browser , :require_authenticated_user]
+
+    ## Admin Dashboard
+    live "/", AdminDashboardLive, :index
+
+    ## Coaching Personas
+    live "/coaching_personas", CoachingPersonaLive.Index, :index
+    live "/coaching_personas/new", CoachingPersonaLive.Index, :new
+    live "/coaching_personas/:id/edit", CoachingPersonaLive.Index, :edit
+
+    live "/coaching_personas/:id", CoachingPersonaLive.Show, :show
+    live "/coaching_personas/:id/show/edit", CoachingPersonaLive.Show, :edit
+
+    ## Conversation Topics
+    live "/conversation_topics", ConversationTopicLive.Index, :index
+    live "/conversation_topics/new", ConversationTopicLive.Index, :new
+    live "/conversation_topics/:id/edit", ConversationTopicLive.Index, :edit
+
+    live "/conversation_topics/:id", ConversationTopicLive.Show, :show
+    live "/conversation_topics/:id/show/edit", ConversationTopicLive.Show, :edit
+
+    ## Lessons
+    live "/lessons", LessonLive.Index, :index
+    live "/lessons/new", LessonLive.Index, :new
+    live "/lessons/:id/edit", LessonLive.Index, :edit
+
+    live "/lessons/:id", LessonLive.Show, :show
+    live "/lessons/:id/show/edit", LessonLive.Show, :edit
+
+    ## Subscription Plans
+    live "/subscription_plans", SubscriptionPlanLive.Index, :index
+    live "/subscription_plans/new", SubscriptionPlanLive.Index, :new
+    live "/subscription_plans/:id/edit", SubscriptionPlanLive.Index, :edit
+
+    live "/subscription_plans/:id", SubscriptionPlanLive.Show, :show
+    live "/subscription_plans/:id/show/edit", SubscriptionPlanLive.Show, :edit
+  end
+
 end
