@@ -89,8 +89,12 @@ defmodule SpeakFirstAiWeb.AdminDashboardLive do
     {:ok,
      socket
      |> assign(:page_title, "Admin Dashboard")
-     |> assign(:current_path, "/admin")
      |> load_stats()}
+  end
+
+  @impl true
+  def handle_params(_params, _uri, socket) do
+    {:noreply, SpeakFirstAiWeb.LiveAdminHooks.update_current_path(socket)}
   end
 
   defp load_stats(socket) do

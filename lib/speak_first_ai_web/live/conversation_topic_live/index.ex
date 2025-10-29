@@ -56,6 +56,11 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Index do
   end
 
   @impl true
+  def handle_params(_params, _uri, socket) do
+    {:noreply, SpeakFirstAiWeb.LiveAdminHooks.update_current_path(socket)}
+  end
+
+  @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     conversation_topic = Conversation.get_conversation_topic!(socket.assigns.current_scope, id)
     {:ok, _} = Conversation.delete_conversation_topic(socket.assigns.current_scope, conversation_topic)

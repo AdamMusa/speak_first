@@ -5,6 +5,7 @@ defmodule SpeakFirstAiWeb.Layouts do
   """
   use SpeakFirstAiWeb, :html
   import Phoenix.Controller, only: [get_csrf_token: 0]
+  alias Phoenix.LiveView.JS
 
   # Embed all files in layouts/* within this module.
   # The default root.html.heex file contains the HTML

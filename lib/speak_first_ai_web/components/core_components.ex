@@ -491,40 +491,63 @@ defmodule SpeakFirstAiWeb.CoreComponents do
   attr :active, :boolean, default: false
 
   def admin_nav_link(assigns) do
-    # Determine if this link is active based on current_path
     href_path = assigns.href
     current = assigns.current_path || ""
 
     is_active =
-      if assigns.active do
-        true
-      else
-        cond do
-          # Exact match for dashboard
-          href_path == "/admin" -> current == "/admin"
-          # For other routes, check if current path starts with href path
-          current != "" -> String.starts_with?(current, href_path)
-          true -> false
-        end
+      cond do
+        href_path == "/admin" -> current == "/admin"
+        current != "" && String.starts_with?(current, href_path) ->
+          remaining = String.slice(current, String.length(href_path)..-1)
+          remaining == "" || String.starts_with?(remaining, "/")
+        true -> false
       end
 
-    icon_class = "mr-3 h-5 w-5 " <> if(is_active, do: "text-gray-900", else: "text-gray-500")
-    assigns = assign(assigns, :icon_class, icon_class)
-    assigns = assign(assigns, :is_active, is_active)
+    nav_id = "nav-#{String.replace(href_path, ~r/[^a-zA-Z0-9]/, "-")}"
+
+    active_classes = "bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 shadow-sm border-l-4 border-blue-600"
+    inactive_classes = "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+
+    # Use JS commands to apply/remove active classes
+    js_commands = if is_active do
+      JS.remove_class(inactive_classes, to: "##{nav_id}")
+      |> JS.add_class(active_classes, to: "##{nav_id}")
+      |> JS.remove_class("text-gray-500", to: "##{nav_id} svg")
+      |> JS.add_class("text-blue-600", to: "##{nav_id} svg")
+      |> JS.remove_class("font-medium", to: "##{nav_id} span")
+      |> JS.add_class("font-semibold", to: "##{nav_id} span")
+    else
+      JS.remove_class(active_classes, to: "##{nav_id}")
+      |> JS.add_class(inactive_classes, to: "##{nav_id}")
+      |> JS.remove_class("text-blue-600", to: "##{nav_id} svg")
+      |> JS.add_class("text-gray-500", to: "##{nav_id} svg")
+      |> JS.remove_class("font-semibold", to: "##{nav_id} span")
+      |> JS.add_class("font-medium", to: "##{nav_id} span")
+    end
+
+    base_classes = "flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 relative"
+
+    assigns = assign(assigns, :nav_id, nav_id)
+    assigns = assign(assigns, :base_classes, base_classes)
+    assigns = assign(assigns, :js_commands, js_commands)
+
+    # Close sidebar on mobile after clicking nav link
+    close_sidebar_js =
+      JS.add_class("-translate-x-full", to: "#admin-sidebar")
+      |> JS.add_class("opacity-0 pointer-events-none", to: "#admin-sidebar-overlay")
+
+    assigns = assign(assigns, :close_sidebar_js, close_sidebar_js)
 
     ~H"""
     <.link
+      id={@nav_id}
       navigate={@href}
-      class={[
-        "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
-        if(@is_active,
-          do: "bg-blue-50 text-blue-700 border-l-4 border-blue-700",
-          else: "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-        )
-      ]}
+      class={@base_classes}
+      phx-mounted={@js_commands}
+      phx-click={@close_sidebar_js}
     >
-      <.icon name={@icon} class={@icon_class} />
-      {@label}
+      <.icon name={@icon} class="mr-3 h-5 w-5 transition-colors duration-200" />
+      <span>{@label}</span>
     </.link>
     """
   end
