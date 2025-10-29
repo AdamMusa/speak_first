@@ -6,15 +6,15 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Show do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
+    <div>
       <.header>
         Subscription plan {@subscription_plan.id}
         <:subtitle>This is a subscription_plan record from your database.</:subtitle>
         <:actions>
-          <.button navigate={~p"/subscription_plan"}>
+          <.button navigate={~p"/admin/subscription_plans"}>
             <.icon name="hero-arrow-left" />
           </.button>
-          <.button variant="primary" navigate={~p"/subscription_plan/#{@subscription_plan}/edit?return_to=show"}>
+          <.button variant="primary" navigate={~p"/admin/subscription_plans/#{@subscription_plan}/edit?return_to=show"}>
             <.icon name="hero-pencil-square" /> Edit subscription_plan
           </.button>
         </:actions>
@@ -30,7 +30,7 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Show do
         <:item title="Active">{@subscription_plan.active}</:item>
         <:item title="Trial period days">{@subscription_plan.trial_period_days}</:item>
       </.list>
-    </Layouts.app>
+    </div>
     """
   end
 
@@ -61,7 +61,7 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Show do
     {:noreply,
      socket
      |> put_flash(:error, "The current subscription_plan was deleted.")
-     |> push_navigate(to: ~p"/subscription_plan")}
+     |> push_navigate(to: ~p"/admin/subscription_plans")}
   end
 
   def handle_info({type, %SpeakFirstAi.SubscriptionPlans.SubscriptionPlan{}}, socket)

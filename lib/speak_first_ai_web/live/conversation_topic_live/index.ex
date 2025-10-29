@@ -6,11 +6,11 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
+    <div>
       <.header>
         Listing Conversations
         <:actions>
-          <.button variant="primary" navigate={~p"/conversations/new"}>
+          <.button variant="primary" navigate={~p"/admin/conversation_topics/new"}>
             <.icon name="hero-plus" /> New Conversation topic
           </.button>
         </:actions>
@@ -19,16 +19,16 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Index do
       <.table
         id="conversations"
         rows={@streams.conversations}
-        row_click={fn {_id, conversation_topic} -> JS.navigate(~p"/conversations/#{conversation_topic}") end}
+        row_click={fn {_id, conversation_topic} -> JS.navigate(~p"/admin/conversation_topics/#{conversation_topic}") end}
       >
         <:col :let={{_id, conversation_topic}} label="Title">{conversation_topic.title}</:col>
         <:col :let={{_id, conversation_topic}} label="Description">{conversation_topic.description}</:col>
         <:col :let={{_id, conversation_topic}} label="Emoji">{conversation_topic.emoji}</:col>
         <:action :let={{_id, conversation_topic}}>
           <div class="sr-only">
-            <.link navigate={~p"/conversations/#{conversation_topic}"}>Show</.link>
+            <.link navigate={~p"/admin/conversation_topics/#{conversation_topic}"}>Show</.link>
           </div>
-          <.link navigate={~p"/conversations/#{conversation_topic}/edit"}>Edit</.link>
+          <.link navigate={~p"/admin/conversation_topics/#{conversation_topic}/edit"}>Edit</.link>
         </:action>
         <:action :let={{id, conversation_topic}}>
           <.link
@@ -39,7 +39,7 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Index do
           </.link>
         </:action>
       </.table>
-    </Layouts.app>
+    </div>
     """
   end
 

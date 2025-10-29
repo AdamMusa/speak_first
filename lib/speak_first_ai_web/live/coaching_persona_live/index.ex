@@ -6,11 +6,11 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
+    <div>
       <.header>
         Listing Coaching personas
         <:actions>
-          <.button variant="primary" navigate={~p"/coaching_personas/new"}>
+          <.button variant="primary" navigate={~p"/admin/coaching_personas/new"}>
             <.icon name="hero-plus" /> New Coaching persona
           </.button>
         </:actions>
@@ -19,15 +19,15 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Index do
       <.table
         id="coaching_personas"
         rows={@streams.coaching_personas}
-        row_click={fn {_id, coaching_persona} -> JS.navigate(~p"/coaching_personas/#{coaching_persona}") end}
+        row_click={fn {_id, coaching_persona} -> JS.navigate(~p"/admin/coaching_personas/#{coaching_persona}") end}
       >
         <:col :let={{_id, coaching_persona}} label="Title">{coaching_persona.title}</:col>
         <:col :let={{_id, coaching_persona}} label="Description">{coaching_persona.description}</:col>
         <:action :let={{_id, coaching_persona}}>
           <div class="sr-only">
-            <.link navigate={~p"/coaching_personas/#{coaching_persona}"}>Show</.link>
+            <.link navigate={~p"/admin/coaching_personas/#{coaching_persona}"}>Show</.link>
           </div>
-          <.link navigate={~p"/coaching_personas/#{coaching_persona}/edit"}>Edit</.link>
+          <.link navigate={~p"/admin/coaching_personas/#{coaching_persona}/edit"}>Edit</.link>
         </:action>
         <:action :let={{id, coaching_persona}}>
           <.link
@@ -38,7 +38,7 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Index do
           </.link>
         </:action>
       </.table>
-    </Layouts.app>
+    </div>
     """
   end
 

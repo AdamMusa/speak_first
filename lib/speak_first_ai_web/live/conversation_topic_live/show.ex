@@ -6,15 +6,15 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Show do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
+    <div>
       <.header>
         Conversation topic {@conversation_topic.id}
         <:subtitle>This is a conversation_topic record from your database.</:subtitle>
         <:actions>
-          <.button navigate={~p"/conversations"}>
+          <.button navigate={~p"/admin/conversation_topics"}>
             <.icon name="hero-arrow-left" />
           </.button>
-          <.button variant="primary" navigate={~p"/conversations/#{@conversation_topic}/edit?return_to=show"}>
+          <.button variant="primary" navigate={~p"/admin/conversation_topics/#{@conversation_topic}/edit?return_to=show"}>
             <.icon name="hero-pencil-square" /> Edit conversation_topic
           </.button>
         </:actions>
@@ -25,7 +25,7 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Show do
         <:item title="Description">{@conversation_topic.description}</:item>
         <:item title="Emoji">{@conversation_topic.emoji}</:item>
       </.list>
-    </Layouts.app>
+    </div>
     """
   end
 
@@ -56,7 +56,7 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Show do
     {:noreply,
      socket
      |> put_flash(:error, "The current conversation_topic was deleted.")
-     |> push_navigate(to: ~p"/conversations")}
+     |> push_navigate(to: ~p"/admin/conversation_topics")}
   end
 
   def handle_info({type, %SpeakFirstAi.Conversation.ConversationTopic{}}, socket)

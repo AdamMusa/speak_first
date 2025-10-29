@@ -7,22 +7,24 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Form do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <.header>
-        {@page_title}
-        <:subtitle>Use this form to manage conversation_topic records in your database.</:subtitle>
-      </.header>
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+        <.header>
+          {@page_title}
+          <:subtitle>Use this form to manage conversation_topic records in your database.</:subtitle>
+        </.header>
 
-      <.form for={@form} id="conversation_topic-form" phx-change="validate" phx-submit="save">
-        <.input field={@form[:title]} type="text" label="Title" />
-        <.input field={@form[:description]} type="textarea" label="Description" />
-        <.input field={@form[:emoji]} type="text" label="Emoji" />
-        <footer>
-          <.button phx-disable-with="Saving..." variant="primary">Save Conversation topic</.button>
-          <.button navigate={return_path(@current_scope, @return_to, @conversation_topic)}>Cancel</.button>
-        </footer>
-      </.form>
-    </Layouts.app>
+        <.form for={@form} id="conversation_topic-form" phx-change="validate" phx-submit="save">
+          <.input field={@form[:title]} type="text" label="Title" />
+          <.input field={@form[:description]} type="textarea" label="Description" />
+          <.input field={@form[:emoji]} type="text" label="Emoji" />
+          <div class="mt-6 flex items-center gap-3">
+            <.button phx-disable-with="Saving..." variant="primary">Save Conversation topic</.button>
+            <.button navigate={return_path(@current_scope, @return_to, @conversation_topic)}>Cancel</.button>
+          </div>
+        </.form>
+      </div>
+    </div>
     """
   end
 
@@ -95,6 +97,6 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Form do
     end
   end
 
-  defp return_path(_scope, "index", _conversation_topic), do: ~p"/conversations"
-  defp return_path(_scope, "show", conversation_topic), do: ~p"/conversations/#{conversation_topic}"
+  defp return_path(_scope, "index", _conversation_topic), do: ~p"/admin/conversation_topics"
+  defp return_path(_scope, "show", conversation_topic), do: ~p"/admin/conversation_topics/#{conversation_topic}"
 end

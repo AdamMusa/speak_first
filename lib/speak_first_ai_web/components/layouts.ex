@@ -4,6 +4,7 @@ defmodule SpeakFirstAiWeb.Layouts do
   used by your application.
   """
   use SpeakFirstAiWeb, :html
+  import Phoenix.Controller, only: [get_csrf_token: 0]
 
   # Embed all files in layouts/* within this module.
   # The default root.html.heex file contains the HTML

@@ -6,15 +6,15 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Show do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
+    <div>
       <.header>
         Coaching persona {@coaching_persona.id}
         <:subtitle>This is a coaching_persona record from your database.</:subtitle>
         <:actions>
-          <.button navigate={~p"/coaching_personas"}>
+          <.button navigate={~p"/admin/coaching_personas"}>
             <.icon name="hero-arrow-left" />
           </.button>
-          <.button variant="primary" navigate={~p"/coaching_personas/#{@coaching_persona}/edit?return_to=show"}>
+          <.button variant="primary" navigate={~p"/admin/coaching_personas/#{@coaching_persona}/edit?return_to=show"}>
             <.icon name="hero-pencil-square" /> Edit coaching_persona
           </.button>
         </:actions>
@@ -24,7 +24,7 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Show do
         <:item title="Title">{@coaching_persona.title}</:item>
         <:item title="Description">{@coaching_persona.description}</:item>
       </.list>
-    </Layouts.app>
+    </div>
     """
   end
 
@@ -55,7 +55,7 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Show do
     {:noreply,
      socket
      |> put_flash(:error, "The current coaching_persona was deleted.")
-     |> push_navigate(to: ~p"/coaching_personas")}
+     |> push_navigate(to: ~p"/admin/coaching_personas")}
   end
 
   def handle_info({type, %SpeakFirstAi.Coaching.CoachingPersona{}}, socket)

@@ -7,21 +7,23 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Form do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <.header>
-        {@page_title}
-        <:subtitle>Use this form to manage coaching_persona records in your database.</:subtitle>
-      </.header>
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+        <.header>
+          {@page_title}
+          <:subtitle>Use this form to manage coaching_persona records in your database.</:subtitle>
+        </.header>
 
-      <.form for={@form} id="coaching_persona-form" phx-change="validate" phx-submit="save">
-        <.input field={@form[:title]} type="text" label="Title" />
-        <.input field={@form[:description]} type="textarea" label="Description" />
-        <footer>
-          <.button phx-disable-with="Saving..." variant="primary">Save Coaching persona</.button>
-          <.button navigate={return_path(@current_scope, @return_to, @coaching_persona)}>Cancel</.button>
-        </footer>
-      </.form>
-    </Layouts.app>
+        <.form for={@form} id="coaching_persona-form" phx-change="validate" phx-submit="save">
+          <.input field={@form[:title]} type="text" label="Title" />
+          <.input field={@form[:description]} type="textarea" label="Description" />
+          <div class="mt-6 flex items-center gap-3">
+            <.button phx-disable-with="Saving..." variant="primary">Save Coaching persona</.button>
+            <.button navigate={return_path(@current_scope, @return_to, @coaching_persona)}>Cancel</.button>
+          </div>
+        </.form>
+      </div>
+    </div>
     """
   end
 
@@ -94,6 +96,6 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Form do
     end
   end
 
-  defp return_path(_scope, "index", _coaching_persona), do: ~p"/coaching_personas"
-  defp return_path(_scope, "show", coaching_persona), do: ~p"/coaching_personas/#{coaching_persona}"
+  defp return_path(_scope, "index", _coaching_persona), do: ~p"/admin/coaching_personas"
+  defp return_path(_scope, "show", coaching_persona), do: ~p"/admin/coaching_personas/#{coaching_persona}"
 end

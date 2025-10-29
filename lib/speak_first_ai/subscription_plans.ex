@@ -41,7 +41,8 @@ defmodule SpeakFirstAi.SubscriptionPlans do
 
   """
   def list_subscription_plan(%Scope{} = scope) do
-    Repo.all_by(SubscriptionPlan, user_id: scope.user.id)
+    from(s in SubscriptionPlan, where: s.user_id == ^scope.user.id)
+    |> Repo.all()
   end
 
   @doc """

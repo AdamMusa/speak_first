@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-50">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title suffix=" · Admin">
+      <%= assigns[:page_title] || "Admin" %>
+    </.live_title>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}></script>
+  </head>
+  <body class="h-full" data-path={assigns[:current_path] || ""}>
+    <script>
+      // Update current path on LiveView navigation
+      window.addEventListener("phx:navigate", (e) => {
+        document.body.setAttribute("data-path", window.location.pathname);
+      });
+      // Also set initial path
+      if (!document.body.getAttribute("data-path")) {
+        document.body.setAttribute("data-path", window.location.pathname);
+      }
+    </script>
+    <div class="flex h-full">
+      <!-- Sidebar -->
+      <aside class={[
+        "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transition-transform duration-300 lg:translate-x-0 lg:static",
+        if(assigns[:sidebar_open], do: "translate-x-0", else: "-translate-x-full")
+      ]}>
+        <div class="flex flex-col h-full">
+          <!-- Logo -->
+          <div class="h-16 flex items-center px-6 border-b border-gray-200">
+            <span class="text-lg font-semibold text-gray-900">Admin Panel</span>
+          </div>
+          
+          <!-- Navigation -->
+          <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+            <.admin_nav_link 
+              href={~p"/admin"} 
+              icon="hero-home" 
+              label="Dashboard"
+              current_path={assigns[:current_path] || ""}
+            />
+            <.admin_nav_link 
+              href={~p"/admin/coaching_personas"} 
+              icon="hero-user-group" 
+              label="Coaching Personas"
+              current_path={assigns[:current_path] || ""}
+            />
+            <.admin_nav_link 
+              href={~p"/admin/conversation_topics"} 
+              icon="hero-chat-bubble-left-right" 
+              label="Conversation Topics"
+              current_path={assigns[:current_path] || ""}
+            />
+            <.admin_nav_link 
+              href={~p"/admin/lessons"} 
+              icon="hero-academic-cap" 
+              label="Lessons"
+              current_path={assigns[:current_path] || ""}
+            />
+            <.admin_nav_link 
+              href={~p"/admin/subscription_plans"} 
+              icon="hero-credit-card" 
+              label="Subscription Plans"
+              current_path={assigns[:current_path] || ""}
+            />
+          </nav>
+          
+          <!-- User Section -->
+          <div class="px-3 py-4 border-t border-gray-200">
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                <.icon name="hero-user" class="w-5 h-5 text-gray-600" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 truncate">
+                  {if assigns[:current_scope], do: assigns[:current_scope].user.email, else: "Admin"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Mobile overlay -->
+      <div 
+        class={[
+          "fixed inset-0 z-40 bg-gray-900 bg-opacity-50 transition-opacity duration-300 lg:hidden",
+          if(assigns[:sidebar_open], do: "opacity-100", else: "opacity-0 pointer-events-none")
+        ]}
+        phx-click="toggle-sidebar"
+      ></div>
+
+      <!-- Main content -->
+      <div class="flex-1 flex flex-col overflow-hidden lg:ml-0">
+        <!-- Top bar -->
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center">
+            <button 
+              type="button" 
+              class="lg:hidden p-2 -ml-2 text-gray-500 hover:text-gray-600 hover:bg-gray-100 rounded-md"
+              aria-label="Toggle sidebar"
+            >
+              <.icon name="hero-bars-3" class="w-5 h-5" />
+            </button>
+            <h1 class="ml-2 lg:ml-0 text-lg font-medium text-gray-900">
+              {assigns[:page_title] || "Dashboard"}
+            </h1>
+          </div>
+          
+          <div class="flex items-center">
+            <.link 
+              href={~p"/users/log-out"} 
+              method="delete" 
+              class="text-sm text-gray-600 hover:text-gray-900"
+            >
+              Sign out
+            </.link>
+          </div>
+        </header>
+        
+        <!-- Page content -->
+        <main class="flex-1 overflow-y-auto">
+          <div class="py-6 px-4 sm:px-6 lg:px-8">
+            {assigns[:inner_content]}
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

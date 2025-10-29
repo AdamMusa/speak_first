@@ -6,11 +6,11 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
+    <div>
       <.header>
         Listing Subscription plan
         <:actions>
-          <.button variant="primary" navigate={~p"/subscription_plan/new"}>
+          <.button variant="primary" navigate={~p"/admin/subscription_plans/new"}>
             <.icon name="hero-plus" /> New Subscription plan
           </.button>
         </:actions>
@@ -19,7 +19,7 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Index do
       <.table
         id="subscription_plan"
         rows={@streams.subscription_plan_collection}
-        row_click={fn {_id, subscription_plan} -> JS.navigate(~p"/subscription_plan/#{subscription_plan}") end}
+        row_click={fn {_id, subscription_plan} -> JS.navigate(~p"/admin/subscription_plans/#{subscription_plan}") end}
       >
         <:col :let={{_id, subscription_plan}} label="Name">{subscription_plan.name}</:col>
         <:col :let={{_id, subscription_plan}} label="Description">{subscription_plan.description}</:col>
@@ -31,9 +31,9 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Index do
         <:col :let={{_id, subscription_plan}} label="Trial period days">{subscription_plan.trial_period_days}</:col>
         <:action :let={{_id, subscription_plan}}>
           <div class="sr-only">
-            <.link navigate={~p"/subscription_plan/#{subscription_plan}"}>Show</.link>
+            <.link navigate={~p"/admin/subscription_plans/#{subscription_plan}"}>Show</.link>
           </div>
-          <.link navigate={~p"/subscription_plan/#{subscription_plan}/edit"}>Edit</.link>
+          <.link navigate={~p"/admin/subscription_plans/#{subscription_plan}/edit"}>Edit</.link>
         </:action>
         <:action :let={{id, subscription_plan}}>
           <.link
@@ -44,7 +44,7 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Index do
           </.link>
         </:action>
       </.table>
-    </Layouts.app>
+    </div>
     """
   end
 

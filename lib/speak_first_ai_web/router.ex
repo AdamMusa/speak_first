@@ -13,6 +13,17 @@ defmodule SpeakFirstAiWeb.Router do
     plug :fetch_current_scope_for_user
   end
 
+  pipeline :admin do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug SpeakFirstAiWeb.Plugs.CurrentPath
+    plug :put_root_layout, html: {SpeakFirstAiWeb.Layouts, :admin}
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+    plug :fetch_current_scope_for_user
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -48,12 +59,50 @@ defmodule SpeakFirstAiWeb.Router do
   ## Authentication routes
 
   scope "/", SpeakFirstAiWeb do
-    pipe_through [:browser, :require_authenticated_user]
+    pipe_through [:admin, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{SpeakFirstAiWeb.UserAuth, :require_authenticated}] do
+      on_mount: [
+        {SpeakFirstAiWeb.UserAuth, :require_authenticated},
+        {SpeakFirstAiWeb.LiveAdminHooks, :assign_current_path}
+      ] do
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
+
+      ## Admin Dashboard
+      live "/admin", AdminDashboardLive, :index
+
+      ## Coaching Personas
+      live "/admin/coaching_personas", CoachingPersonaLive.Index, :index
+      live "/admin/coaching_personas/new", CoachingPersonaLive.Form, :new
+      live "/admin/coaching_personas/:id/edit", CoachingPersonaLive.Form, :edit
+
+      live "/admin/coaching_personas/:id", CoachingPersonaLive.Show, :show
+      live "/admin/coaching_personas/:id/show/edit", CoachingPersonaLive.Form, :edit
+
+      ## Conversation Topics
+      live "/admin/conversation_topics", ConversationTopicLive.Index, :index
+      live "/admin/conversation_topics/new", ConversationTopicLive.Form, :new
+      live "/admin/conversation_topics/:id/edit", ConversationTopicLive.Form, :edit
+
+      live "/admin/conversation_topics/:id", ConversationTopicLive.Show, :show
+      live "/admin/conversation_topics/:id/show/edit", ConversationTopicLive.Form, :edit
+
+      ## Lessons
+      live "/admin/lessons", LessonLive.Index, :index
+      live "/admin/lessons/new", LessonLive.Form, :new
+      live "/admin/lessons/:id/edit", LessonLive.Form, :edit
+
+      live "/admin/lessons/:id", LessonLive.Show, :show
+      live "/admin/lessons/:id/show/edit", LessonLive.Form, :edit
+
+      ## Subscription Plans
+      live "/admin/subscription_plans", SubscriptionPlanLive.Index, :index
+      live "/admin/subscription_plans/new", SubscriptionPlanLive.Form, :new
+      live "/admin/subscription_plans/:id/edit", SubscriptionPlanLive.Form, :edit
+
+      live "/admin/subscription_plans/:id", SubscriptionPlanLive.Show, :show
+      live "/admin/subscription_plans/:id/show/edit", SubscriptionPlanLive.Form, :edit
     end
 
     post "/users/update-password", UserSessionController, :update_password
@@ -73,43 +122,5 @@ defmodule SpeakFirstAiWeb.Router do
     delete "/users/log-out", UserSessionController, :delete
   end
 
-  scope "/admin", SpeakFirstAiWeb do
-    pipe_through [:browser , :require_authenticated_user]
-
-    ## Admin Dashboard
-    live "/", AdminDashboardLive, :index
-
-    ## Coaching Personas
-    live "/coaching_personas", CoachingPersonaLive.Index, :index
-    live "/coaching_personas/new", CoachingPersonaLive.Index, :new
-    live "/coaching_personas/:id/edit", CoachingPersonaLive.Index, :edit
-
-    live "/coaching_personas/:id", CoachingPersonaLive.Show, :show
-    live "/coaching_personas/:id/show/edit", CoachingPersonaLive.Show, :edit
-
-    ## Conversation Topics
-    live "/conversation_topics", ConversationTopicLive.Index, :index
-    live "/conversation_topics/new", ConversationTopicLive.Index, :new
-    live "/conversation_topics/:id/edit", ConversationTopicLive.Index, :edit
-
-    live "/conversation_topics/:id", ConversationTopicLive.Show, :show
-    live "/conversation_topics/:id/show/edit", ConversationTopicLive.Show, :edit
-
-    ## Lessons
-    live "/lessons", LessonLive.Index, :index
-    live "/lessons/new", LessonLive.Index, :new
-    live "/lessons/:id/edit", LessonLive.Index, :edit
-
-    live "/lessons/:id", LessonLive.Show, :show
-    live "/lessons/:id/show/edit", LessonLive.Show, :edit
-
-    ## Subscription Plans
-    live "/subscription_plans", SubscriptionPlanLive.Index, :index
-    live "/subscription_plans/new", SubscriptionPlanLive.Index, :new
-    live "/subscription_plans/:id/edit", SubscriptionPlanLive.Index, :edit
-
-    live "/subscription_plans/:id", SubscriptionPlanLive.Show, :show
-    live "/subscription_plans/:id/show/edit", SubscriptionPlanLive.Show, :edit
-  end
 
 end

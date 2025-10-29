@@ -6,11 +6,11 @@ defmodule SpeakFirstAiWeb.LessonLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
+    <div>
       <.header>
         Listing Lessons
         <:actions>
-          <.button variant="primary" navigate={~p"/lessons/new"}>
+          <.button variant="primary" navigate={~p"/admin/lessons/new"}>
             <.icon name="hero-plus" /> New Lesson
           </.button>
         </:actions>
@@ -19,7 +19,7 @@ defmodule SpeakFirstAiWeb.LessonLive.Index do
       <.table
         id="lessons"
         rows={@streams.lessons}
-        row_click={fn {_id, lesson} -> JS.navigate(~p"/lessons/#{lesson}") end}
+        row_click={fn {_id, lesson} -> JS.navigate(~p"/admin/lessons/#{lesson}") end}
       >
         <:col :let={{_id, lesson}} label="Title">{lesson.title}</:col>
         <:col :let={{_id, lesson}} label="Description">{lesson.description}</:col>
@@ -30,9 +30,9 @@ defmodule SpeakFirstAiWeb.LessonLive.Index do
         <:col :let={{_id, lesson}} label="Is active">{lesson.is_active}</:col>
         <:action :let={{_id, lesson}}>
           <div class="sr-only">
-            <.link navigate={~p"/lessons/#{lesson}"}>Show</.link>
+            <.link navigate={~p"/admin/lessons/#{lesson}"}>Show</.link>
           </div>
-          <.link navigate={~p"/lessons/#{lesson}/edit"}>Edit</.link>
+          <.link navigate={~p"/admin/lessons/#{lesson}/edit"}>Edit</.link>
         </:action>
         <:action :let={{id, lesson}}>
           <.link
@@ -43,7 +43,7 @@ defmodule SpeakFirstAiWeb.LessonLive.Index do
           </.link>
         </:action>
       </.table>
-    </Layouts.app>
+    </div>
     """
   end
 

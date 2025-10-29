@@ -41,7 +41,8 @@ defmodule SpeakFirstAi.Lessons do
 
   """
   def list_lessons(%Scope{} = scope) do
-    Repo.all_by(Lesson, user_id: scope.user.id)
+    from(l in Lesson, where: l.user_id == ^scope.user.id)
+    |> Repo.all()
   end
 
   @doc """

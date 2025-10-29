@@ -41,7 +41,11 @@ defmodule SpeakFirstAi.Coaching do
 
   """
   def list_coaching_personas(%Scope{} = scope) do
-    Repo.all_by(CoachingPersona, user_id: scope.user.id)
+    from(c in CoachingPersona, 
+      where: c.user_id == ^scope.user.id,
+      order_by: [desc: c.inserted_at]
+    )
+    |> Repo.all()
   end
 
   @doc """

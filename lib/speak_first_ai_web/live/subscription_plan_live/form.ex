@@ -7,27 +7,29 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Form do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <.header>
-        {@page_title}
-        <:subtitle>Use this form to manage subscription_plan records in your database.</:subtitle>
-      </.header>
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+        <.header>
+          {@page_title}
+          <:subtitle>Use this form to manage subscription_plan records in your database.</:subtitle>
+        </.header>
 
-      <.form for={@form} id="subscription_plan-form" phx-change="validate" phx-submit="save">
-        <.input field={@form[:name]} type="text" label="Name" />
-        <.input field={@form[:description]} type="textarea" label="Description" />
-        <.input field={@form[:price_cents]} type="number" label="Price cents" step="any" />
-        <.input field={@form[:currency]} type="text" label="Currency" />
-        <.input field={@form[:interval]} type="text" label="Interval" />
-        <.input field={@form[:stripe_price_id]} type="text" label="Stripe price" />
-        <.input field={@form[:active]} type="checkbox" label="Active" />
-        <.input field={@form[:trial_period_days]} type="number" label="Trial period days" />
-        <footer>
-          <.button phx-disable-with="Saving..." variant="primary">Save Subscription plan</.button>
-          <.button navigate={return_path(@current_scope, @return_to, @subscription_plan)}>Cancel</.button>
-        </footer>
-      </.form>
-    </Layouts.app>
+        <.form for={@form} id="subscription_plan-form" phx-change="validate" phx-submit="save">
+          <.input field={@form[:name]} type="text" label="Name" />
+          <.input field={@form[:description]} type="textarea" label="Description" />
+          <.input field={@form[:price_cents]} type="number" label="Price cents" step="any" />
+          <.input field={@form[:currency]} type="text" label="Currency" />
+          <.input field={@form[:interval]} type="text" label="Interval" />
+          <.input field={@form[:stripe_price_id]} type="text" label="Stripe price" />
+          <.input field={@form[:active]} type="checkbox" label="Active" />
+          <.input field={@form[:trial_period_days]} type="number" label="Trial period days" />
+          <div class="mt-6 flex items-center gap-3">
+            <.button phx-disable-with="Saving..." variant="primary">Save Subscription plan</.button>
+            <.button navigate={return_path(@current_scope, @return_to, @subscription_plan)}>Cancel</.button>
+          </div>
+        </.form>
+      </div>
+    </div>
     """
   end
 
@@ -100,6 +102,6 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Form do
     end
   end
 
-  defp return_path(_scope, "index", _subscription_plan), do: ~p"/subscription_plan"
-  defp return_path(_scope, "show", subscription_plan), do: ~p"/subscription_plan/#{subscription_plan}"
+  defp return_path(_scope, "index", _subscription_plan), do: ~p"/admin/subscription_plans"
+  defp return_path(_scope, "show", subscription_plan), do: ~p"/admin/subscription_plans/#{subscription_plan}"
 end

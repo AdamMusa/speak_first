@@ -41,7 +41,8 @@ defmodule SpeakFirstAi.Conversation do
 
   """
   def list_conversations(%Scope{} = scope) do
-    Repo.all_by(ConversationTopic, user_id: scope.user.id)
+    from(c in ConversationTopic, where: c.user_id == ^scope.user.id)
+    |> Repo.all()
   end
 
   @doc """

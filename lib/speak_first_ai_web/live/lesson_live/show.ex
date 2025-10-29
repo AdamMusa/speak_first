@@ -6,15 +6,15 @@ defmodule SpeakFirstAiWeb.LessonLive.Show do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
+    <div>
       <.header>
         Lesson {@lesson.id}
         <:subtitle>This is a lesson record from your database.</:subtitle>
         <:actions>
-          <.button navigate={~p"/lessons"}>
+          <.button navigate={~p"/admin/lessons"}>
             <.icon name="hero-arrow-left" />
           </.button>
-          <.button variant="primary" navigate={~p"/lessons/#{@lesson}/edit?return_to=show"}>
+          <.button variant="primary" navigate={~p"/admin/lessons/#{@lesson}/edit?return_to=show"}>
             <.icon name="hero-pencil-square" /> Edit lesson
           </.button>
         </:actions>
@@ -29,7 +29,7 @@ defmodule SpeakFirstAiWeb.LessonLive.Show do
         <:item title="Key vocabulary">{@lesson.key_vocabulary}</:item>
         <:item title="Is active">{@lesson.is_active}</:item>
       </.list>
-    </Layouts.app>
+    </div>
     """
   end
 
@@ -60,7 +60,7 @@ defmodule SpeakFirstAiWeb.LessonLive.Show do
     {:noreply,
      socket
      |> put_flash(:error, "The current lesson was deleted.")
-     |> push_navigate(to: ~p"/lessons")}
+     |> push_navigate(to: ~p"/admin/lessons")}
   end
 
   def handle_info({type, %SpeakFirstAi.Lessons.Lesson{}}, socket)

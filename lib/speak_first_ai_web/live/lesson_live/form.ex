@@ -7,25 +7,27 @@ defmodule SpeakFirstAiWeb.LessonLive.Form do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <.header>
-        {@page_title}
-        <:subtitle>Use this form to manage lesson records in your database.</:subtitle>
-      </.header>
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+        <.header>
+          {@page_title}
+          <:subtitle>Use this form to manage lesson records in your database.</:subtitle>
+        </.header>
 
-      <.form for={@form} id="lesson-form" phx-change="validate" phx-submit="save">
-        <.input field={@form[:title]} type="text" label="Title" />
-        <.input field={@form[:description]} type="textarea" label="Description" />
-        <.input field={@form[:lesson_type]} type="text" label="Lesson type" />
-        <.input field={@form[:lesson_difficulty]} type="text" label="Lesson difficulty" />
-        <.input field={@form[:estimated_minutes]} type="number" label="Estimated minutes" />
-        <.input field={@form[:is_active]} type="checkbox" label="Is active" />
-        <footer>
-          <.button phx-disable-with="Saving..." variant="primary">Save Lesson</.button>
-          <.button navigate={return_path(@current_scope, @return_to, @lesson)}>Cancel</.button>
-        </footer>
-      </.form>
-    </Layouts.app>
+        <.form for={@form} id="lesson-form" phx-change="validate" phx-submit="save">
+          <.input field={@form[:title]} type="text" label="Title" />
+          <.input field={@form[:description]} type="textarea" label="Description" />
+          <.input field={@form[:lesson_type]} type="text" label="Lesson type" />
+          <.input field={@form[:lesson_difficulty]} type="text" label="Lesson difficulty" />
+          <.input field={@form[:estimated_minutes]} type="number" label="Estimated minutes" />
+          <.input field={@form[:is_active]} type="checkbox" label="Is active" />
+          <div class="mt-6 flex items-center gap-3">
+            <.button phx-disable-with="Saving..." variant="primary">Save Lesson</.button>
+            <.button navigate={return_path(@current_scope, @return_to, @lesson)}>Cancel</.button>
+          </div>
+        </.form>
+      </div>
+    </div>
     """
   end
 
@@ -98,6 +100,6 @@ defmodule SpeakFirstAiWeb.LessonLive.Form do
     end
   end
 
-  defp return_path(_scope, "index", _lesson), do: ~p"/lessons"
-  defp return_path(_scope, "show", lesson), do: ~p"/lessons/#{lesson}"
+  defp return_path(_scope, "index", _lesson), do: ~p"/admin/lessons"
+  defp return_path(_scope, "show", lesson), do: ~p"/admin/lessons/#{lesson}"
 end

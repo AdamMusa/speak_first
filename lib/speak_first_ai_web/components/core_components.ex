@@ -207,13 +207,16 @@ defmodule SpeakFirstAiWeb.CoreComponents do
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div class="fieldset mb-2">
-      <label>
-        <span :if={@label} class="label mb-1">{@label}</span>
+    <div class="mb-4">
+      <label class="block">
+        <span :if={@label} class="block text-sm font-medium text-gray-700 mb-1">{@label}</span>
         <select
           id={@id}
           name={@name}
-          class={[@class || "w-full select", @errors != [] && (@error_class || "select-error")]}
+          class={[
+            @class || "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border bg-white text-gray-900",
+            @errors != [] && (@error_class || "border-red-300 focus:border-red-500 focus:ring-red-500")
+          ]}
           multiple={@multiple}
           {@rest}
         >
@@ -228,15 +231,16 @@ defmodule SpeakFirstAiWeb.CoreComponents do
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div class="fieldset mb-2">
-      <label>
-        <span :if={@label} class="label mb-1">{@label}</span>
+    <div class="mb-4">
+      <label class="block">
+        <span :if={@label} class="block text-sm font-medium text-gray-700 mb-1">{@label}</span>
         <textarea
           id={@id}
           name={@name}
+          rows={assigns[:rest][:rows] || 3}
           class={[
-            @class || "w-full textarea",
-            @errors != [] && (@error_class || "textarea-error")
+            @class || "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border bg-white text-gray-900",
+            @errors != [] && (@error_class || "border-red-300 focus:border-red-500 focus:ring-red-500")
           ]}
           {@rest}
         >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
@@ -249,17 +253,17 @@ defmodule SpeakFirstAiWeb.CoreComponents do
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
-    <div class="fieldset mb-2">
-      <label>
-        <span :if={@label} class="label mb-1">{@label}</span>
+    <div class="mb-4">
+      <label class="block">
+        <span :if={@label} class="block text-sm font-medium text-gray-700 mb-1">{@label}</span>
         <input
           type={@type}
           name={@name}
           id={@id}
           value={Phoenix.HTML.Form.normalize_value(@type, @value)}
           class={[
-            @class || "w-full input",
-            @errors != [] && (@error_class || "input-error")
+            @class || "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border bg-white text-gray-900",
+            @errors != [] && (@error_class || "border-red-300 focus:border-red-500 focus:ring-red-500")
           ]}
           {@rest}
         />
@@ -334,34 +338,41 @@ defmodule SpeakFirstAiWeb.CoreComponents do
       end
 
     ~H"""
-    <table class="table table-zebra">
-      <thead>
-        <tr>
-          <th :for={col <- @col}>{col[:label]}</th>
-          <th :if={@action != []}>
-            <span class="sr-only">{gettext("Actions")}</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody id={@id} phx-update={is_struct(@rows, Phoenix.LiveView.LiveStream) && "stream"}>
-        <tr :for={row <- @rows} id={@row_id && @row_id.(row)}>
-          <td
-            :for={col <- @col}
-            phx-click={@row_click && @row_click.(row)}
-            class={@row_click && "hover:cursor-pointer"}
-          >
-            {render_slot(col, @row_item.(row))}
-          </td>
-          <td :if={@action != []} class="w-0 font-semibold">
-            <div class="flex gap-4">
-              <%= for action <- @action do %>
-                {render_slot(action, @row_item.(row))}
-              <% end %>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200 bg-white">
+        <thead class="bg-gray-50">
+          <tr>
+            <th :for={col <- @col} class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {col[:label]}
+            </th>
+            <th :if={@action != []} class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <span class="sr-only">{gettext("Actions")}</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody id={@id} phx-update={is_struct(@rows, Phoenix.LiveView.LiveStream) && "stream"} class="bg-white divide-y divide-gray-200">
+          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="hover:bg-gray-50">
+            <td
+              :for={col <- @col}
+              phx-click={@row_click && @row_click.(row)}
+              class={[
+                "px-6 py-4 whitespace-nowrap text-sm text-gray-900",
+                @row_click && "hover:cursor-pointer"
+              ]}
+            >
+              {render_slot(col, @row_item.(row))}
+            </td>
+            <td :if={@action != []} class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              <div class="flex gap-4">
+                <%= for action <- @action do %>
+                  {render_slot(action, @row_item.(row))}
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     """
   end
 
@@ -381,14 +392,14 @@ defmodule SpeakFirstAiWeb.CoreComponents do
 
   def list(assigns) do
     ~H"""
-    <ul class="list">
-      <li :for={item <- @item} class="list-row">
-        <div class="list-col-grow">
-          <div class="font-bold">{item.title}</div>
-          <div>{render_slot(item)}</div>
+    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+      <dl class="divide-y divide-gray-200">
+        <div :for={item <- @item} class="px-4 py-5 sm:px-6 sm:grid sm:grid-cols-3 sm:gap-4">
+          <dt class="text-sm font-medium text-gray-900">{item.title}</dt>
+          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{render_slot(item)}</dd>
         </div>
-      </li>
-    </ul>
+      </dl>
+    </div>
     """
   end
 
@@ -468,5 +479,53 @@ defmodule SpeakFirstAiWeb.CoreComponents do
   """
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
+  end
+
+  @doc """
+  Admin navigation link component for the sidebar.
+  """
+  attr :href, :string, required: true
+  attr :icon, :string, required: true
+  attr :label, :string, required: true
+  attr :current_path, :string, default: ""
+  attr :active, :boolean, default: false
+
+  def admin_nav_link(assigns) do
+    # Determine if this link is active based on current_path
+    href_path = assigns.href
+    current = assigns.current_path || ""
+
+    is_active =
+      if assigns.active do
+        true
+      else
+        cond do
+          # Exact match for dashboard
+          href_path == "/admin" -> current == "/admin"
+          # For other routes, check if current path starts with href path
+          current != "" -> String.starts_with?(current, href_path)
+          true -> false
+        end
+      end
+
+    icon_class = "mr-3 h-5 w-5 " <> if(is_active, do: "text-gray-900", else: "text-gray-500")
+    assigns = assign(assigns, :icon_class, icon_class)
+    assigns = assign(assigns, :is_active, is_active)
+
+    ~H"""
+    <.link
+      navigate={@href}
+      class={[
+        "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
+        if(@is_active,
+          do: "bg-blue-50 text-blue-700 border-l-4 border-blue-700",
+          else: "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+        )
+      ]}
+    >
+      <.icon name={@icon} class={@icon_class} />
+      {@label}
+    </.link>
+    """
   end
 end
