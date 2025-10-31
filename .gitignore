@@ -35,4 +35,5 @@ speak_first_ai-*.tar
 npm-debug.log
 /assets/node_modules/
 
-*.env
+.env*
+mix.lock
