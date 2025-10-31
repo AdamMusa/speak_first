@@ -19,8 +19,26 @@ defmodule SpeakFirstAi.SubscriptionPlans.SubscriptionPlan do
   @doc false
   def changeset(subscription_plan, attrs, user_scope) do
     subscription_plan
-    |> cast(attrs, [:name, :description, :price_cents, :currency, :interval, :stripe_price_id, :active, :trial_period_days])
-    |> validate_required([:name, :description, :price_cents, :currency, :interval, :stripe_price_id, :active, :trial_period_days])
+    |> cast(attrs, [
+      :name,
+      :description,
+      :price_cents,
+      :currency,
+      :interval,
+      :stripe_price_id,
+      :active,
+      :trial_period_days
+    ])
+    |> validate_required([
+      :name,
+      :description,
+      :price_cents,
+      :currency,
+      :interval,
+      :stripe_price_id,
+      :active,
+      :trial_period_days
+    ])
     |> put_change(:user_id, user_scope.user.id)
   end
 end

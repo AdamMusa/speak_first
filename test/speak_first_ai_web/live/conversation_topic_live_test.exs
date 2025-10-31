@@ -5,7 +5,11 @@ defmodule SpeakFirstAiWeb.ConversationTopicLiveTest do
   import SpeakFirstAi.ConversationFixtures
 
   @create_attrs %{description: "some description", title: "some title", emoji: "some emoji"}
-  @update_attrs %{description: "some updated description", title: "some updated title", emoji: "some updated emoji"}
+  @update_attrs %{
+    description: "some updated description",
+    title: "some updated title",
+    emoji: "some updated emoji"
+  }
   @invalid_attrs %{description: nil, title: nil, emoji: nil}
 
   setup :register_and_log_in_user
@@ -52,7 +56,10 @@ defmodule SpeakFirstAiWeb.ConversationTopicLiveTest do
       assert html =~ "some title"
     end
 
-    test "updates conversation_topic in listing", %{conn: conn, conversation_topic: conversation_topic} do
+    test "updates conversation_topic in listing", %{
+      conn: conn,
+      conversation_topic: conversation_topic
+    } do
       {:ok, index_live, _html} = live(conn, ~p"/conversations")
 
       assert {:ok, form_live, _html} =
@@ -78,10 +85,16 @@ defmodule SpeakFirstAiWeb.ConversationTopicLiveTest do
       assert html =~ "some updated title"
     end
 
-    test "deletes conversation_topic in listing", %{conn: conn, conversation_topic: conversation_topic} do
+    test "deletes conversation_topic in listing", %{
+      conn: conn,
+      conversation_topic: conversation_topic
+    } do
       {:ok, index_live, _html} = live(conn, ~p"/conversations")
 
-      assert index_live |> element("#conversations-#{conversation_topic.id} a", "Delete") |> render_click()
+      assert index_live
+             |> element("#conversations-#{conversation_topic.id} a", "Delete")
+             |> render_click()
+
       refute has_element?(index_live, "#conversations-#{conversation_topic.id}")
     end
   end
@@ -96,14 +109,20 @@ defmodule SpeakFirstAiWeb.ConversationTopicLiveTest do
       assert html =~ conversation_topic.title
     end
 
-    test "updates conversation_topic and returns to show", %{conn: conn, conversation_topic: conversation_topic} do
+    test "updates conversation_topic and returns to show", %{
+      conn: conn,
+      conversation_topic: conversation_topic
+    } do
       {:ok, show_live, _html} = live(conn, ~p"/conversations/#{conversation_topic}")
 
       assert {:ok, form_live, _} =
                show_live
                |> element("a", "Edit")
                |> render_click()
-               |> follow_redirect(conn, ~p"/conversations/#{conversation_topic}/edit?return_to=show")
+               |> follow_redirect(
+                 conn,
+                 ~p"/conversations/#{conversation_topic}/edit?return_to=show"
+               )
 
       assert render(form_live) =~ "Edit Conversation topic"
 

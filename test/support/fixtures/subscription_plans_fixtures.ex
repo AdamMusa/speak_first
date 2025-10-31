@@ -20,7 +20,9 @@ defmodule SpeakFirstAi.SubscriptionPlansFixtures do
         trial_period_days: 42
       })
 
-    {:ok, subscription_plan} = SpeakFirstAi.SubscriptionPlans.create_subscription_plan(scope, attrs)
+    {:ok, subscription_plan} =
+      SpeakFirstAi.SubscriptionPlans.create_subscription_plan(scope, attrs)
+
     subscription_plan
   end
 end

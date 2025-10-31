@@ -19,10 +19,16 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Index do
       <.table
         id="conversations"
         rows={@streams.conversations}
-        row_click={fn {_id, conversation_topic} -> JS.navigate(~p"/admin/conversation_topics/#{conversation_topic}") end}
+        row_click={
+          fn {_id, conversation_topic} ->
+            JS.navigate(~p"/admin/conversation_topics/#{conversation_topic}")
+          end
+        }
       >
         <:col :let={{_id, conversation_topic}} label="Title">{conversation_topic.title}</:col>
-        <:col :let={{_id, conversation_topic}} label="Description">{conversation_topic.description}</:col>
+        <:col :let={{_id, conversation_topic}} label="Description">
+          {conversation_topic.description}
+        </:col>
         <:col :let={{_id, conversation_topic}} label="Emoji">{conversation_topic.emoji}</:col>
         <:action :let={{_id, conversation_topic}}>
           <div class="sr-only">
@@ -63,7 +69,9 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Index do
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     conversation_topic = Conversation.get_conversation_topic!(socket.assigns.current_scope, id)
-    {:ok, _} = Conversation.delete_conversation_topic(socket.assigns.current_scope, conversation_topic)
+
+    {:ok, _} =
+      Conversation.delete_conversation_topic(socket.assigns.current_scope, conversation_topic)
 
     {:noreply, stream_delete(socket, :conversations, conversation_topic)}
   end
@@ -71,7 +79,8 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Index do
   @impl true
   def handle_info({type, %SpeakFirstAi.Conversation.ConversationTopic{}}, socket)
       when type in [:created, :updated, :deleted] do
-    {:noreply, stream(socket, :conversations, list_conversations(socket.assigns.current_scope), reset: true)}
+    {:noreply,
+     stream(socket, :conversations, list_conversations(socket.assigns.current_scope), reset: true)}
   end
 
   defp list_conversations(current_scope) do

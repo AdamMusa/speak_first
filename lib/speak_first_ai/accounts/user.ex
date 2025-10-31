@@ -8,6 +8,9 @@ defmodule SpeakFirstAi.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :utc_datetime
     field :authenticated_at, :utc_datetime, virtual: true
+    field :stripe_customer_id, :string
+
+    has_one :subscription, SpeakFirstAi.Subscriptions.Subscription
 
     timestamps(type: :utc_datetime)
   end

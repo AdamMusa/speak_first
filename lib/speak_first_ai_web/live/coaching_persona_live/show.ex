@@ -14,7 +14,10 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Show do
           <.button navigate={~p"/admin/coaching_personas"}>
             <.icon name="hero-arrow-left" />
           </.button>
-          <.button variant="primary" navigate={~p"/admin/coaching_personas/#{@coaching_persona}/edit?return_to=show"}>
+          <.button
+            variant="primary"
+            navigate={~p"/admin/coaching_personas/#{@coaching_persona}/edit?return_to=show"}
+          >
             <.icon name="hero-pencil-square" /> Edit coaching_persona
           </.button>
         </:actions>
@@ -37,7 +40,10 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Show do
     {:ok,
      socket
      |> assign(:page_title, "Show Coaching persona")
-     |> assign(:coaching_persona, Coaching.get_coaching_persona!(socket.assigns.current_scope, id))}
+     |> assign(
+       :coaching_persona,
+       Coaching.get_coaching_persona!(socket.assigns.current_scope, id)
+     )}
   end
 
   @impl true

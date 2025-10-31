@@ -46,6 +46,25 @@ defmodule SpeakFirstAi.SubscriptionPlans do
   end
 
   @doc """
+  Returns list of active subscription plans (public, no scope required).
+  Used for landing page and public pricing display.
+  """
+  def list_active_plans do
+    from(sp in SubscriptionPlan,
+      where: sp.active == true,
+      order_by: [asc: sp.price_cents]
+    )
+    |> Repo.all()
+  end
+
+  @doc """
+  Gets a subscription plan by name.
+  """
+  def get_plan_by_name(name) when is_binary(name) do
+    Repo.get_by(SubscriptionPlan, name: name, active: true)
+  end
+
+  @doc """
   Gets a single subscription_plan.
 
   Raises `Ecto.NoResultsError` if the Subscription plan does not exist.
@@ -140,7 +159,11 @@ defmodule SpeakFirstAi.SubscriptionPlans do
       %Ecto.Changeset{data: %SubscriptionPlan{}}
 
   """
-  def change_subscription_plan(%Scope{} = scope, %SubscriptionPlan{} = subscription_plan, attrs \\ %{}) do
+  def change_subscription_plan(
+        %Scope{} = scope,
+        %SubscriptionPlan{} = subscription_plan,
+        attrs \\ %{}
+      ) do
     true = subscription_plan.user_id == scope.user.id
 
     SubscriptionPlan.changeset(subscription_plan, attrs, scope)

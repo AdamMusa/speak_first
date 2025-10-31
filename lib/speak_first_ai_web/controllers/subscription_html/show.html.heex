@@ -1,0 +1,152 @@
+<Layouts.app flash={@flash} current_scope={@current_scope}>
+  <%!-- Price formatting helper --%>
+  <% format_price = fn cents, currency ->
+    amount = Float.round(cents / 100, 2)
+    symbol = case String.downcase(currency || "usd") do
+      "usd" -> "$"
+      "eur" -> "€"
+      "gbp" -> "£"
+      _ -> ""
+    end
+    "#{symbol}#{:erlang.float_to_binary(amount, [{:decimals, 2}])}"
+  end %>
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <.header>
+      Subscription
+      <:subtitle>Manage your subscription and billing</:subtitle>
+    </.header>
+
+    <%= if @is_basic && length(@available_plans) > 0 do %>
+      <div class="mt-8 bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Upgrade Your Plan</h3>
+        <p class="text-gray-600 mb-6">
+          <%= if @subscription do %>
+            You're currently on <%= @subscription.subscription_plan && @subscription.subscription_plan.name || "Basic" %>. Choose a plan below to upgrade.
+          <% else %>
+            You're currently on the free plan. Choose a plan below to get started.
+          <% end %>
+        </p>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <%= for plan <- @available_plans do %>
+            <form action={~p"/subscriptions/upgrade"} method="post" class="flex flex-col">
+              <input type="hidden" name="_method" value="post" />
+              <input type="hidden" name="_csrf_token" value={get_csrf_token()} />
+              <input type="hidden" name="plan_id" value={plan.stripe_price_id} />
+              <button
+                type="submit"
+                class="flex-1 px-6 py-4 text-left rounded-lg border-2 border-gray-200 bg-white hover:border-gray-900 hover:bg-gray-50 transition-all"
+              >
+                <div class="font-semibold text-gray-900 mb-2"><%= plan.name %></div>
+                <%= if plan.description do %>
+                  <p class="text-sm text-gray-600 mb-3 line-clamp-2"><%= plan.description %></p>
+                <% end %>
+                <%= if plan.price_cents do %>
+                  <div class="text-2xl font-bold text-gray-900 mb-1">
+                    <%= format_price.(plan.price_cents, plan.currency) %>
+                  </div>
+                  <div class="text-sm text-gray-500">per <%= plan.interval %></div>
+                <% end %>
+              </button>
+            </form>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%= if @subscription do %>
+      <div class="mt-8 bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+        <div class="mb-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Current Plan</h3>
+          <p class="text-gray-600">
+            Status: <span class="font-medium"><%= String.capitalize(@subscription.status || "N/A") %></span>
+          </p>
+          <%= if @subscription.subscription_plan do %>
+            <p class="text-gray-600">
+              Plan: <span class="font-medium"><%= @subscription.subscription_plan.name %></span>
+            </p>
+          <% end %>
+          <%= if @subscription.current_period_end do %>
+            <p class="text-gray-600">
+              Current period ends: <span class="font-medium"><%= Calendar.strftime(@subscription.current_period_end, "%B %d, %Y") %></span>
+            </p>
+          <% end %>
+          <%= if @subscription.cancel_at_period_end do %>
+            <p class="text-red-600 font-medium mt-2">
+              Subscription will be canceled at the end of the current billing period.
+            </p>
+          <% end %>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <%= unless @subscription.cancel_at_period_end do %>
+            <form action={~p"/subscriptions/cancel"} method="post">
+              <input type="hidden" name="_method" value="post" />
+              <input type="hidden" name="_csrf_token" value={get_csrf_token()} />
+              <.button variant="outline" type="submit">Cancel Subscription</.button>
+            </form>
+          <% end %>
+
+          <%= if @can_request_refund do %>
+            <form action={~p"/subscriptions/refund"} method="post">
+              <input type="hidden" name="_method" value="post" />
+              <input type="hidden" name="_csrf_token" value={get_csrf_token()} />
+              <.button variant="outline" type="submit">Request Refund</.button>
+            </form>
+          <% end %>
+
+          <%= if @is_basic && length(@available_plans) > 0 do %>
+            <div class="w-full mt-4">
+              <h4 class="text-md font-semibold text-gray-900 mb-3">Upgrade Plans</h4>
+              <div class="grid gap-3 sm:grid-cols-2">
+                <%= for plan <- @available_plans do %>
+                  <form action={~p"/subscriptions/upgrade"} method="post" class="flex-1">
+                    <input type="hidden" name="_method" value="post" />
+                    <input type="hidden" name="_csrf_token" value={get_csrf_token()} />
+                    <input type="hidden" name="plan_id" value={plan.stripe_price_id} />
+                    <button
+                      type="submit"
+                      class="w-full px-4 py-3 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      <span class="font-semibold">Upgrade to <%= plan.name %></span>
+                      <%= if plan.price_cents do %>
+                        <span class="block text-xs text-gray-500 mt-1">
+                          <%= format_price.(plan.price_cents, plan.currency) %>/<%= plan.interval %>
+                        </span>
+                      <% end %>
+                    </button>
+                  </form>
+                <% end %>
+              </div>
+            </div>
+          <% else %>
+            <form action={~p"/subscriptions/upgrade"} method="post">
+              <input type="hidden" name="_method" value="post" />
+              <input type="hidden" name="_csrf_token" value={get_csrf_token()} />
+              <.button variant="primary" type="submit">Upgrade Plan</.button>
+            </form>
+          <% end %>
+
+          <form action={~p"/subscriptions/payment_method"} method="post">
+            <input type="hidden" name="_method" value="post" />
+            <input type="hidden" name="_csrf_token" value={get_csrf_token()} />
+            <.button variant="outline" type="submit">Update Payment Method</.button>
+          </form>
+        </div>
+
+        <%= if @can_request_refund && @refund_deadline do %>
+          <p class="mt-4 text-sm text-gray-500">
+            You can request a refund until <%= Calendar.strftime(@refund_deadline, "%B %d, %Y at %I:%M %p") %>
+          </p>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="mt-8 bg-white border border-gray-200 rounded-lg shadow-sm p-6 text-center">
+        <p class="text-gray-600 mb-4">No active subscription found.</p>
+        <a href={~p"/#pricing"} class="text-indigo-600 hover:text-indigo-800 font-medium">
+          View Plans →
+        </a>
+      </div>
+    <% end %>
+  </div>
+</Layouts.app>
+

@@ -19,7 +19,9 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Form do
           <.input field={@form[:description]} type="textarea" label="Description" />
           <div class="mt-6 flex items-center gap-3">
             <.button phx-disable-with="Saving..." variant="primary">Save Coaching persona</.button>
-            <.button navigate={return_path(@current_scope, @return_to, @coaching_persona)}>Cancel</.button>
+            <.button navigate={return_path(@current_scope, @return_to, @coaching_persona)}>
+              Cancel
+            </.button>
           </div>
         </.form>
       </div>
@@ -44,7 +46,10 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Form do
     socket
     |> assign(:page_title, "Edit Coaching persona")
     |> assign(:coaching_persona, coaching_persona)
-    |> assign(:form, to_form(Coaching.change_coaching_persona(socket.assigns.current_scope, coaching_persona)))
+    |> assign(
+      :form,
+      to_form(Coaching.change_coaching_persona(socket.assigns.current_scope, coaching_persona))
+    )
   end
 
   defp apply_action(socket, :new, _params) do
@@ -53,12 +58,21 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Form do
     socket
     |> assign(:page_title, "New Coaching persona")
     |> assign(:coaching_persona, coaching_persona)
-    |> assign(:form, to_form(Coaching.change_coaching_persona(socket.assigns.current_scope, coaching_persona)))
+    |> assign(
+      :form,
+      to_form(Coaching.change_coaching_persona(socket.assigns.current_scope, coaching_persona))
+    )
   end
 
   @impl true
   def handle_event("validate", %{"coaching_persona" => coaching_persona_params}, socket) do
-    changeset = Coaching.change_coaching_persona(socket.assigns.current_scope, socket.assigns.coaching_persona, coaching_persona_params)
+    changeset =
+      Coaching.change_coaching_persona(
+        socket.assigns.current_scope,
+        socket.assigns.coaching_persona,
+        coaching_persona_params
+      )
+
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
@@ -67,13 +81,18 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Form do
   end
 
   defp save_coaching_persona(socket, :edit, coaching_persona_params) do
-    case Coaching.update_coaching_persona(socket.assigns.current_scope, socket.assigns.coaching_persona, coaching_persona_params) do
+    case Coaching.update_coaching_persona(
+           socket.assigns.current_scope,
+           socket.assigns.coaching_persona,
+           coaching_persona_params
+         ) do
       {:ok, coaching_persona} ->
         {:noreply,
          socket
          |> put_flash(:info, "Coaching persona updated successfully")
          |> push_navigate(
-           to: return_path(socket.assigns.current_scope, socket.assigns.return_to, coaching_persona)
+           to:
+             return_path(socket.assigns.current_scope, socket.assigns.return_to, coaching_persona)
          )}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -88,7 +107,8 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Form do
          socket
          |> put_flash(:info, "Coaching persona created successfully")
          |> push_navigate(
-           to: return_path(socket.assigns.current_scope, socket.assigns.return_to, coaching_persona)
+           to:
+             return_path(socket.assigns.current_scope, socket.assigns.return_to, coaching_persona)
          )}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -97,5 +117,7 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Form do
   end
 
   defp return_path(_scope, "index", _coaching_persona), do: ~p"/admin/coaching_personas"
-  defp return_path(_scope, "show", coaching_persona), do: ~p"/admin/coaching_personas/#{coaching_persona}"
+
+  defp return_path(_scope, "show", coaching_persona),
+    do: ~p"/admin/coaching_personas/#{coaching_persona}"
 end

@@ -62,7 +62,9 @@ defmodule SpeakFirstAiWeb.LessonLive.Form do
 
   @impl true
   def handle_event("validate", %{"lesson" => lesson_params}, socket) do
-    changeset = Lessons.change_lesson(socket.assigns.current_scope, socket.assigns.lesson, lesson_params)
+    changeset =
+      Lessons.change_lesson(socket.assigns.current_scope, socket.assigns.lesson, lesson_params)
+
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 

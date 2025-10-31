@@ -20,7 +20,9 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Form do
           <.input field={@form[:emoji]} type="text" label="Emoji" />
           <div class="mt-6 flex items-center gap-3">
             <.button phx-disable-with="Saving..." variant="primary">Save Conversation topic</.button>
-            <.button navigate={return_path(@current_scope, @return_to, @conversation_topic)}>Cancel</.button>
+            <.button navigate={return_path(@current_scope, @return_to, @conversation_topic)}>
+              Cancel
+            </.button>
           </div>
         </.form>
       </div>
@@ -45,7 +47,12 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Form do
     socket
     |> assign(:page_title, "Edit Conversation topic")
     |> assign(:conversation_topic, conversation_topic)
-    |> assign(:form, to_form(Conversation.change_conversation_topic(socket.assigns.current_scope, conversation_topic)))
+    |> assign(
+      :form,
+      to_form(
+        Conversation.change_conversation_topic(socket.assigns.current_scope, conversation_topic)
+      )
+    )
   end
 
   defp apply_action(socket, :new, _params) do
@@ -54,12 +61,23 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Form do
     socket
     |> assign(:page_title, "New Conversation topic")
     |> assign(:conversation_topic, conversation_topic)
-    |> assign(:form, to_form(Conversation.change_conversation_topic(socket.assigns.current_scope, conversation_topic)))
+    |> assign(
+      :form,
+      to_form(
+        Conversation.change_conversation_topic(socket.assigns.current_scope, conversation_topic)
+      )
+    )
   end
 
   @impl true
   def handle_event("validate", %{"conversation_topic" => conversation_topic_params}, socket) do
-    changeset = Conversation.change_conversation_topic(socket.assigns.current_scope, socket.assigns.conversation_topic, conversation_topic_params)
+    changeset =
+      Conversation.change_conversation_topic(
+        socket.assigns.current_scope,
+        socket.assigns.conversation_topic,
+        conversation_topic_params
+      )
+
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
@@ -68,13 +86,22 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Form do
   end
 
   defp save_conversation_topic(socket, :edit, conversation_topic_params) do
-    case Conversation.update_conversation_topic(socket.assigns.current_scope, socket.assigns.conversation_topic, conversation_topic_params) do
+    case Conversation.update_conversation_topic(
+           socket.assigns.current_scope,
+           socket.assigns.conversation_topic,
+           conversation_topic_params
+         ) do
       {:ok, conversation_topic} ->
         {:noreply,
          socket
          |> put_flash(:info, "Conversation topic updated successfully")
          |> push_navigate(
-           to: return_path(socket.assigns.current_scope, socket.assigns.return_to, conversation_topic)
+           to:
+             return_path(
+               socket.assigns.current_scope,
+               socket.assigns.return_to,
+               conversation_topic
+             )
          )}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -83,13 +110,21 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Form do
   end
 
   defp save_conversation_topic(socket, :new, conversation_topic_params) do
-    case Conversation.create_conversation_topic(socket.assigns.current_scope, conversation_topic_params) do
+    case Conversation.create_conversation_topic(
+           socket.assigns.current_scope,
+           conversation_topic_params
+         ) do
       {:ok, conversation_topic} ->
         {:noreply,
          socket
          |> put_flash(:info, "Conversation topic created successfully")
          |> push_navigate(
-           to: return_path(socket.assigns.current_scope, socket.assigns.return_to, conversation_topic)
+           to:
+             return_path(
+               socket.assigns.current_scope,
+               socket.assigns.return_to,
+               conversation_topic
+             )
          )}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -98,5 +133,7 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Form do
   end
 
   defp return_path(_scope, "index", _conversation_topic), do: ~p"/admin/conversation_topics"
-  defp return_path(_scope, "show", conversation_topic), do: ~p"/admin/conversation_topics/#{conversation_topic}"
+
+  defp return_path(_scope, "show", conversation_topic),
+    do: ~p"/admin/conversation_topics/#{conversation_topic}"
 end

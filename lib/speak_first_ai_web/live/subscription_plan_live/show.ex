@@ -14,7 +14,10 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Show do
           <.button navigate={~p"/admin/subscription_plans"}>
             <.icon name="hero-arrow-left" />
           </.button>
-          <.button variant="primary" navigate={~p"/admin/subscription_plans/#{@subscription_plan}/edit?return_to=show"}>
+          <.button
+            variant="primary"
+            navigate={~p"/admin/subscription_plans/#{@subscription_plan}/edit?return_to=show"}
+          >
             <.icon name="hero-pencil-square" /> Edit subscription_plan
           </.button>
         </:actions>
@@ -43,7 +46,10 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Show do
     {:ok,
      socket
      |> assign(:page_title, "Show Subscription plan")
-     |> assign(:subscription_plan, SubscriptionPlans.get_subscription_plan!(socket.assigns.current_scope, id))}
+     |> assign(
+       :subscription_plan,
+       SubscriptionPlans.get_subscription_plan!(socket.assigns.current_scope, id)
+     )}
   end
 
   @impl true

@@ -24,13 +24,16 @@ defmodule SpeakFirstAiWeb.LiveAdminHooks do
       # Use uri from socket (most reliable)
       Map.has_key?(socket, :uri) && socket.uri.path ->
         socket.uri.path
+
       # Use assigns uri if available
       socket.assigns[:uri] && socket.assigns.uri.path ->
         socket.assigns.uri.path
+
       # Fallback to host_uri parsing
       socket.assigns[:host_uri] ->
         uri = URI.parse(socket.assigns.host_uri)
         uri.path || "/"
+
       # Final fallback
       true ->
         "/"

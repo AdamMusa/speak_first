@@ -11,8 +11,8 @@ defmodule SpeakFirstAiWeb.AdminDashboardLive do
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome to Admin Dashboard</h1>
         <p class="text-gray-600">Manage your SpeakFirst AI platform from here.</p>
       </div>
-
-      <!-- Stats Grid -->
+      
+    <!-- Stats Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <.stat_card
           title="Coaching Personas"
@@ -46,8 +46,8 @@ defmodule SpeakFirstAiWeb.AdminDashboardLive do
           href={~p"/admin/subscription_plans"}
         />
       </div>
-
-      <!-- Quick Actions -->
+      
+    <!-- Quick Actions -->
       <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-6">
         <h2 class="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -134,7 +134,13 @@ defmodule SpeakFirstAiWeb.AdminDashboardLive do
   # Quick Action Button Component
   defp quick_action_button(assigns) do
     ~H"""
-    <.link navigate={@href} class={["text-white px-4 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2", @color]}>
+    <.link
+      navigate={@href}
+      class={[
+        "text-white px-4 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2",
+        @color
+      ]}
+    >
       <.icon name={@icon} class="w-5 h-5" />
       <span>{@title}</span>
     </.link>

@@ -33,6 +33,12 @@ defmodule SpeakFirstAiWeb.Router do
     # No default route here - landing page is in live_session :current_user below
   end
 
+  scope "/webhooks", SpeakFirstAiWeb do
+    pipe_through :api
+
+    post "/stripe", StripeWebhookController, :create
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", SpeakFirstAiWeb do
   #   pipe_through :api
@@ -58,7 +64,7 @@ defmodule SpeakFirstAiWeb.Router do
   ## Authentication routes
 
   scope "/", SpeakFirstAiWeb do
-    pipe_through [:admin, :require_authenticated_user]
+    pipe_through :admin
 
     live_session :require_authenticated_user,
       on_mount: [
@@ -108,6 +114,20 @@ defmodule SpeakFirstAiWeb.Router do
   end
 
   scope "/", SpeakFirstAiWeb do
+    pipe_through :browser
+
+    # Subscription routes
+    get "/subscriptions", SubscriptionController, :show
+    post "/subscriptions", SubscriptionController, :create
+    post "/subscriptions/cancel", SubscriptionController, :cancel_subscription
+    post "/subscriptions/refund", SubscriptionController, :request_refund
+    post "/subscriptions/upgrade", SubscriptionController, :upgrade
+    post "/subscriptions/payment_method", SubscriptionController, :update_payment_method
+    get "/subscriptions/success", SubscriptionController, :success
+    get "/subscriptions/cancel", SubscriptionController, :cancel
+  end
+
+  scope "/", SpeakFirstAiWeb do
     pipe_through [:browser]
 
     live_session :current_user,
@@ -123,6 +143,4 @@ defmodule SpeakFirstAiWeb.Router do
     post "/users/log-in", UserSessionController, :create
     delete "/users/log-out", UserSessionController, :delete
   end
-
-
 end

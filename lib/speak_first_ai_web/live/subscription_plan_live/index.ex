@@ -19,16 +19,28 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Index do
       <.table
         id="subscription_plan"
         rows={@streams.subscription_plan_collection}
-        row_click={fn {_id, subscription_plan} -> JS.navigate(~p"/admin/subscription_plans/#{subscription_plan}") end}
+        row_click={
+          fn {_id, subscription_plan} ->
+            JS.navigate(~p"/admin/subscription_plans/#{subscription_plan}")
+          end
+        }
       >
         <:col :let={{_id, subscription_plan}} label="Name">{subscription_plan.name}</:col>
-        <:col :let={{_id, subscription_plan}} label="Description">{subscription_plan.description}</:col>
-        <:col :let={{_id, subscription_plan}} label="Price cents">{subscription_plan.price_cents}</:col>
+        <:col :let={{_id, subscription_plan}} label="Description">
+          {subscription_plan.description}
+        </:col>
+        <:col :let={{_id, subscription_plan}} label="Price cents">
+          {subscription_plan.price_cents}
+        </:col>
         <:col :let={{_id, subscription_plan}} label="Currency">{subscription_plan.currency}</:col>
         <:col :let={{_id, subscription_plan}} label="Interval">{subscription_plan.interval}</:col>
-        <:col :let={{_id, subscription_plan}} label="Stripe price">{subscription_plan.stripe_price_id}</:col>
+        <:col :let={{_id, subscription_plan}} label="Stripe price">
+          {subscription_plan.stripe_price_id}
+        </:col>
         <:col :let={{_id, subscription_plan}} label="Active">{subscription_plan.active}</:col>
-        <:col :let={{_id, subscription_plan}} label="Trial period days">{subscription_plan.trial_period_days}</:col>
+        <:col :let={{_id, subscription_plan}} label="Trial period days">
+          {subscription_plan.trial_period_days}
+        </:col>
         <:action :let={{_id, subscription_plan}}>
           <div class="sr-only">
             <.link navigate={~p"/admin/subscription_plans/#{subscription_plan}"}>Show</.link>
@@ -57,7 +69,10 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Index do
     {:ok,
      socket
      |> assign(:page_title, "Listing Subscription plan")
-     |> stream(:subscription_plan_collection, list_subscription_plan(socket.assigns.current_scope))}
+     |> stream(
+       :subscription_plan_collection,
+       list_subscription_plan(socket.assigns.current_scope)
+     )}
   end
 
   @impl true
@@ -68,7 +83,9 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Index do
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     subscription_plan = SubscriptionPlans.get_subscription_plan!(socket.assigns.current_scope, id)
-    {:ok, _} = SubscriptionPlans.delete_subscription_plan(socket.assigns.current_scope, subscription_plan)
+
+    {:ok, _} =
+      SubscriptionPlans.delete_subscription_plan(socket.assigns.current_scope, subscription_plan)
 
     {:noreply, stream_delete(socket, :subscription_plan_collection, subscription_plan)}
   end
@@ -76,7 +93,13 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Index do
   @impl true
   def handle_info({type, %SpeakFirstAi.SubscriptionPlans.SubscriptionPlan{}}, socket)
       when type in [:created, :updated, :deleted] do
-    {:noreply, stream(socket, :subscription_plan_collection, list_subscription_plan(socket.assigns.current_scope), reset: true)}
+    {:noreply,
+     stream(
+       socket,
+       :subscription_plan_collection,
+       list_subscription_plan(socket.assigns.current_scope),
+       reset: true
+     )}
   end
 
   defp list_subscription_plan(current_scope) do

@@ -90,11 +90,15 @@ defmodule SpeakFirstAiWeb.CoreComponents do
   """
   attr :rest, :global, include: ~w(href navigate patch method download name value disabled)
   attr :class, :string
-  attr :variant, :string, values: ~w(primary)
+  attr :variant, :string, values: ~w(primary outline)
   slot :inner_block, required: true
 
   def button(%{rest: rest} = assigns) do
-    variants = %{"primary" => "btn-primary", nil => "btn-primary btn-soft"}
+    variants = %{
+      "primary" => "btn-primary",
+      "outline" => "btn-outline",
+      nil => "btn-primary btn-soft"
+    }
 
     assigns =
       assign_new(assigns, :class, fn ->
@@ -214,8 +218,10 @@ defmodule SpeakFirstAiWeb.CoreComponents do
           id={@id}
           name={@name}
           class={[
-            @class || "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border bg-white text-gray-900",
-            @errors != [] && (@error_class || "border-red-300 focus:border-red-500 focus:ring-red-500")
+            @class ||
+              "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border bg-white text-gray-900",
+            @errors != [] &&
+              (@error_class || "border-red-300 focus:border-red-500 focus:ring-red-500")
           ]}
           multiple={@multiple}
           {@rest}
@@ -239,8 +245,10 @@ defmodule SpeakFirstAiWeb.CoreComponents do
           name={@name}
           rows={assigns[:rest][:rows] || 3}
           class={[
-            @class || "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border bg-white text-gray-900",
-            @errors != [] && (@error_class || "border-red-300 focus:border-red-500 focus:ring-red-500")
+            @class ||
+              "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border bg-white text-gray-900",
+            @errors != [] &&
+              (@error_class || "border-red-300 focus:border-red-500 focus:ring-red-500")
           ]}
           {@rest}
         >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
@@ -262,8 +270,10 @@ defmodule SpeakFirstAiWeb.CoreComponents do
           id={@id}
           value={Phoenix.HTML.Form.normalize_value(@type, @value)}
           class={[
-            @class || "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border bg-white text-gray-900",
-            @errors != [] && (@error_class || "border-red-300 focus:border-red-500 focus:ring-red-500")
+            @class ||
+              "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border bg-white text-gray-900",
+            @errors != [] &&
+              (@error_class || "border-red-300 focus:border-red-500 focus:ring-red-500")
           ]}
           {@rest}
         />
@@ -342,15 +352,25 @@ defmodule SpeakFirstAiWeb.CoreComponents do
       <table class="min-w-full divide-y divide-gray-200 bg-white">
         <thead class="bg-gray-50">
           <tr>
-            <th :for={col <- @col} class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th
+              :for={col <- @col}
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
               {col[:label]}
             </th>
-            <th :if={@action != []} class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th
+              :if={@action != []}
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
               <span class="sr-only">{gettext("Actions")}</span>
             </th>
           </tr>
         </thead>
-        <tbody id={@id} phx-update={is_struct(@rows, Phoenix.LiveView.LiveStream) && "stream"} class="bg-white divide-y divide-gray-200">
+        <tbody
+          id={@id}
+          phx-update={is_struct(@rows, Phoenix.LiveView.LiveStream) && "stream"}
+          class="bg-white divide-y divide-gray-200"
+        >
           <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="hover:bg-gray-50">
             <td
               :for={col <- @col}
@@ -362,7 +382,10 @@ defmodule SpeakFirstAiWeb.CoreComponents do
             >
               {render_slot(col, @row_item.(row))}
             </td>
-            <td :if={@action != []} class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+            <td
+              :if={@action != []}
+              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+            >
               <div class="flex gap-4">
                 <%= for action <- @action do %>
                   {render_slot(action, @row_item.(row))}
@@ -496,36 +519,44 @@ defmodule SpeakFirstAiWeb.CoreComponents do
 
     is_active =
       cond do
-        href_path == "/admin" -> current == "/admin"
+        href_path == "/admin" ->
+          current == "/admin"
+
         current != "" && String.starts_with?(current, href_path) ->
           remaining = String.slice(current, String.length(href_path)..-1)
           remaining == "" || String.starts_with?(remaining, "/")
-        true -> false
+
+        true ->
+          false
       end
 
     nav_id = "nav-#{String.replace(href_path, ~r/[^a-zA-Z0-9]/, "-")}"
 
-    active_classes = "bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 shadow-sm border-l-4 border-blue-600"
+    active_classes =
+      "bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 shadow-sm border-l-4 border-blue-600"
+
     inactive_classes = "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
 
     # Use JS commands to apply/remove active classes
-    js_commands = if is_active do
-      JS.remove_class(inactive_classes, to: "##{nav_id}")
-      |> JS.add_class(active_classes, to: "##{nav_id}")
-      |> JS.remove_class("text-gray-500", to: "##{nav_id} svg")
-      |> JS.add_class("text-blue-600", to: "##{nav_id} svg")
-      |> JS.remove_class("font-medium", to: "##{nav_id} span")
-      |> JS.add_class("font-semibold", to: "##{nav_id} span")
-    else
-      JS.remove_class(active_classes, to: "##{nav_id}")
-      |> JS.add_class(inactive_classes, to: "##{nav_id}")
-      |> JS.remove_class("text-blue-600", to: "##{nav_id} svg")
-      |> JS.add_class("text-gray-500", to: "##{nav_id} svg")
-      |> JS.remove_class("font-semibold", to: "##{nav_id} span")
-      |> JS.add_class("font-medium", to: "##{nav_id} span")
-    end
+    js_commands =
+      if is_active do
+        JS.remove_class(inactive_classes, to: "##{nav_id}")
+        |> JS.add_class(active_classes, to: "##{nav_id}")
+        |> JS.remove_class("text-gray-500", to: "##{nav_id} svg")
+        |> JS.add_class("text-blue-600", to: "##{nav_id} svg")
+        |> JS.remove_class("font-medium", to: "##{nav_id} span")
+        |> JS.add_class("font-semibold", to: "##{nav_id} span")
+      else
+        JS.remove_class(active_classes, to: "##{nav_id}")
+        |> JS.add_class(inactive_classes, to: "##{nav_id}")
+        |> JS.remove_class("text-blue-600", to: "##{nav_id} svg")
+        |> JS.add_class("text-gray-500", to: "##{nav_id} svg")
+        |> JS.remove_class("font-semibold", to: "##{nav_id} span")
+        |> JS.add_class("font-medium", to: "##{nav_id} span")
+      end
 
-    base_classes = "flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 relative"
+    base_classes =
+      "flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 relative"
 
     assigns = assign(assigns, :nav_id, nav_id)
     assigns = assign(assigns, :base_classes, base_classes)

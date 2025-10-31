@@ -81,7 +81,10 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLiveTest do
     test "deletes coaching_persona in listing", %{conn: conn, coaching_persona: coaching_persona} do
       {:ok, index_live, _html} = live(conn, ~p"/coaching_personas")
 
-      assert index_live |> element("#coaching_personas-#{coaching_persona.id} a", "Delete") |> render_click()
+      assert index_live
+             |> element("#coaching_personas-#{coaching_persona.id} a", "Delete")
+             |> render_click()
+
       refute has_element?(index_live, "#coaching_personas-#{coaching_persona.id}")
     end
   end
@@ -96,14 +99,20 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLiveTest do
       assert html =~ coaching_persona.title
     end
 
-    test "updates coaching_persona and returns to show", %{conn: conn, coaching_persona: coaching_persona} do
+    test "updates coaching_persona and returns to show", %{
+      conn: conn,
+      coaching_persona: coaching_persona
+    } do
       {:ok, show_live, _html} = live(conn, ~p"/coaching_personas/#{coaching_persona}")
 
       assert {:ok, form_live, _} =
                show_live
                |> element("a", "Edit")
                |> render_click()
-               |> follow_redirect(conn, ~p"/coaching_personas/#{coaching_persona}/edit?return_to=show")
+               |> follow_redirect(
+                 conn,
+                 ~p"/coaching_personas/#{coaching_persona}/edit?return_to=show"
+               )
 
       assert render(form_live) =~ "Edit Coaching persona"
 

@@ -38,43 +38,112 @@ defmodule SpeakFirstAiWeb.Layouts do
   def app(assigns) do
     ~H"""
     <main>
-      <header class="w-full sticky top-0 z-50 bg-white border-b border-gray-200">
+      <header class="w-full sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-8">
             <.link navigate={~p"/"} class="flex items-center gap-2">
-              <span class="text-lg font-bold text-gray-900 tracking-tight">SpeakFirst</span>
+              <span class="text-[18px] font-semibold text-gray-900 tracking-tight">SpeakFirst</span>
             </.link>
             <nav class="hidden md:flex items-center gap-6 text-sm">
-              <a href="#download" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Download</a>
+              <a
+                href="#download"
+                class="text-gray-700 hover:text-gray-900 underline-offset-4 hover:underline"
+              >
+                Download
+              </a>
+              <a
+                href="#pricing"
+                class="text-gray-700 hover:text-gray-900 underline-offset-4 hover:underline"
+              >
+                Pricing
+              </a>
             </nav>
           </div>
 
           <div class="hidden md:flex items-center gap-3">
             <%= if @current_scope && @current_scope.user do %>
-              <.link navigate={~p"/admin"} class="px-4 py-2 text-sm font-semibold rounded-full text-white hover:opacity-90">Dashboard</.link>
-              <.link href={~p"/users/log-out"} method="delete" class="px-4 py-2 text-sm font-semibold rounded-full border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">Log out</.link>
+              <.link
+                navigate={~p"/admin"}
+                class="px-4 py-2 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-gray-800 transition-colors"
+              >
+                Dashboard
+              </.link>
+              <.link
+                href={~p"/users/log-out"}
+                method="delete"
+                class="px-4 py-2 text-sm font-medium rounded-full border border-gray-300 hover:bg-gray-50 transition-colors"
+              >
+                Log out
+              </.link>
             <% else %>
-              <.link navigate={~p"/users/log-in"} class="px-4 py-2 text-sm font-semibold rounded-full border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">Log in</.link>
-              <.link navigate={~p"/users/register"} class="px-4 py-2 text-sm font-semibold rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-md">Get started</.link>
+              <.link
+                navigate={~p"/users/log-in"}
+                class="px-4 py-2 text-sm font-medium rounded-full border border-gray-300 hover:bg-gray-50 transition-colors"
+              >
+                Log in
+              </.link>
+              <.link
+                navigate={~p"/users/register"}
+                class="px-4 py-2 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-gray-800 transition-colors"
+              >
+                Get started
+              </.link>
             <% end %>
           </div>
 
           <div class="md:hidden">
-            <button type="button" class="p-2 rounded-md hover:bg-gray-100" aria-label="Open menu" phx-click={JS.toggle(to: "#mobile-menu", in: {"transition ease-out duration-150", "opacity-0 -translate-y-2", "opacity-100 translate-y-0"}, out: {"transition ease-in duration-100", "opacity-100 translate-y-0", "opacity-0 -translate-y-2"})}>
+            <button
+              type="button"
+              class="p-2 rounded-md hover:bg-gray-100"
+              aria-label="Open menu"
+              phx-click={
+                JS.toggle(
+                  to: "#mobile-menu",
+                  in:
+                    {"transition ease-out duration-150", "opacity-0 -translate-y-2",
+                     "opacity-100 translate-y-0"},
+                  out:
+                    {"transition ease-in duration-100", "opacity-100 translate-y-0",
+                     "opacity-0 -translate-y-2"}
+                )
+              }
+            >
               <.icon name="hero-bars-3" class="w-6 h-6" />
             </button>
           </div>
         </div>
         <div id="mobile-menu" class="md:hidden hidden border-t border-gray-200">
-            <div class="px-4 py-3 space-y-3">
-            <a href="#download" class="block text-gray-700 dark:text-gray-300">Download</a>
+          <div class="px-4 py-3 space-y-3">
+            <a href="#download" class="block text-gray-700">Download</a>
+            <a href="#pricing" class="block text-gray-700">Pricing</a>
             <div class="pt-2 flex items-center gap-3">
               <%= if @current_scope && @current_scope.user do %>
-                <.link navigate={~p"/admin"} class="px-4 py-2 text-sm font-semibold rounded-full bg-gray-900 text-white">Dashboard</.link>
-                <.link href={~p"/users/log-out"} method="delete" class="px-4 py-2 text-sm font-semibold rounded-full border border-gray-300 dark:border-gray-700">Log out</.link>
+                <.link
+                  navigate={~p"/admin"}
+                  class="px-4 py-2 text-sm font-medium rounded-full bg-gray-900 text-white"
+                >
+                  Dashboard
+                </.link>
+                <.link
+                  href={~p"/users/log-out"}
+                  method="delete"
+                  class="px-4 py-2 text-sm font-medium rounded-full border border-gray-300"
+                >
+                  Log out
+                </.link>
               <% else %>
-                <.link navigate={~p"/users/log-in"} class="px-4 py-2 text-sm font-semibold rounded-full border border-gray-300 dark:border-gray-700">Log in</.link>
-                <.link navigate={~p"/users/register"} class="px-4 py-2 text-sm font-semibold rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white">Get started</.link>
+                <.link
+                  navigate={~p"/users/log-in"}
+                  class="px-4 py-2 text-sm font-medium rounded-full border border-gray-300"
+                >
+                  Log in
+                </.link>
+                <.link
+                  navigate={~p"/users/register"}
+                  class="px-4 py-2 text-sm font-medium rounded-full bg-gray-900 text-white"
+                >
+                  Get started
+                </.link>
               <% end %>
             </div>
           </div>

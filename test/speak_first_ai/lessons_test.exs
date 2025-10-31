@@ -9,7 +9,15 @@ defmodule SpeakFirstAi.LessonsTest do
     import SpeakFirstAi.AccountsFixtures, only: [user_scope_fixture: 0]
     import SpeakFirstAi.LessonsFixtures
 
-    @invalid_attrs %{description: nil, title: nil, lesson_type: nil, lesson_difficulty: nil, estimated_minutes: nil, key_vocabulary: nil, is_active: nil}
+    @invalid_attrs %{
+      description: nil,
+      title: nil,
+      lesson_type: nil,
+      lesson_difficulty: nil,
+      estimated_minutes: nil,
+      key_vocabulary: nil,
+      is_active: nil
+    }
 
     test "list_lessons/1 returns all scoped lessons" do
       scope = user_scope_fixture()
@@ -29,7 +37,16 @@ defmodule SpeakFirstAi.LessonsTest do
     end
 
     test "create_lesson/2 with valid data creates a lesson" do
-      valid_attrs = %{description: "some description", title: "some title", lesson_type: "some lesson_type", lesson_difficulty: "some lesson_difficulty", estimated_minutes: 42, key_vocabulary: %{}, is_active: true}
+      valid_attrs = %{
+        description: "some description",
+        title: "some title",
+        lesson_type: "some lesson_type",
+        lesson_difficulty: "some lesson_difficulty",
+        estimated_minutes: 42,
+        key_vocabulary: %{},
+        is_active: true
+      }
+
       scope = user_scope_fixture()
 
       assert {:ok, %Lesson{} = lesson} = Lessons.create_lesson(scope, valid_attrs)
@@ -51,7 +68,16 @@ defmodule SpeakFirstAi.LessonsTest do
     test "update_lesson/3 with valid data updates the lesson" do
       scope = user_scope_fixture()
       lesson = lesson_fixture(scope)
-      update_attrs = %{description: "some updated description", title: "some updated title", lesson_type: "some updated lesson_type", lesson_difficulty: "some updated lesson_difficulty", estimated_minutes: 43, key_vocabulary: %{}, is_active: false}
+
+      update_attrs = %{
+        description: "some updated description",
+        title: "some updated title",
+        lesson_type: "some updated lesson_type",
+        lesson_difficulty: "some updated lesson_difficulty",
+        estimated_minutes: 43,
+        key_vocabulary: %{},
+        is_active: false
+      }
 
       assert {:ok, %Lesson{} = lesson} = Lessons.update_lesson(scope, lesson, update_attrs)
       assert lesson.description == "some updated description"

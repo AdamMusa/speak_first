@@ -4,9 +4,36 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLiveTest do
   import Phoenix.LiveViewTest
   import SpeakFirstAi.SubscriptionPlansFixtures
 
-  @create_attrs %{active: true, name: "some name", description: "some description", currency: "some currency", price_cents: 120.5, interval: "some interval", stripe_price_id: "some stripe_price_id", trial_period_days: 42}
-  @update_attrs %{active: false, name: "some updated name", description: "some updated description", currency: "some updated currency", price_cents: 456.7, interval: "some updated interval", stripe_price_id: "some updated stripe_price_id", trial_period_days: 43}
-  @invalid_attrs %{active: false, name: nil, description: nil, currency: nil, price_cents: nil, interval: nil, stripe_price_id: nil, trial_period_days: nil}
+  @create_attrs %{
+    active: true,
+    name: "some name",
+    description: "some description",
+    currency: "some currency",
+    price_cents: 120.5,
+    interval: "some interval",
+    stripe_price_id: "some stripe_price_id",
+    trial_period_days: 42
+  }
+  @update_attrs %{
+    active: false,
+    name: "some updated name",
+    description: "some updated description",
+    currency: "some updated currency",
+    price_cents: 456.7,
+    interval: "some updated interval",
+    stripe_price_id: "some updated stripe_price_id",
+    trial_period_days: 43
+  }
+  @invalid_attrs %{
+    active: false,
+    name: nil,
+    description: nil,
+    currency: nil,
+    price_cents: nil,
+    interval: nil,
+    stripe_price_id: nil,
+    trial_period_days: nil
+  }
 
   setup :register_and_log_in_user
 
@@ -52,7 +79,10 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLiveTest do
       assert html =~ "some name"
     end
 
-    test "updates subscription_plan in listing", %{conn: conn, subscription_plan: subscription_plan} do
+    test "updates subscription_plan in listing", %{
+      conn: conn,
+      subscription_plan: subscription_plan
+    } do
       {:ok, index_live, _html} = live(conn, ~p"/subscription_plan")
 
       assert {:ok, form_live, _html} =
@@ -78,10 +108,16 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLiveTest do
       assert html =~ "some updated name"
     end
 
-    test "deletes subscription_plan in listing", %{conn: conn, subscription_plan: subscription_plan} do
+    test "deletes subscription_plan in listing", %{
+      conn: conn,
+      subscription_plan: subscription_plan
+    } do
       {:ok, index_live, _html} = live(conn, ~p"/subscription_plan")
 
-      assert index_live |> element("#subscription_plan-#{subscription_plan.id} a", "Delete") |> render_click()
+      assert index_live
+             |> element("#subscription_plan-#{subscription_plan.id} a", "Delete")
+             |> render_click()
+
       refute has_element?(index_live, "#subscription_plan-#{subscription_plan.id}")
     end
   end
@@ -96,14 +132,20 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLiveTest do
       assert html =~ subscription_plan.name
     end
 
-    test "updates subscription_plan and returns to show", %{conn: conn, subscription_plan: subscription_plan} do
+    test "updates subscription_plan and returns to show", %{
+      conn: conn,
+      subscription_plan: subscription_plan
+    } do
       {:ok, show_live, _html} = live(conn, ~p"/subscription_plan/#{subscription_plan}")
 
       assert {:ok, form_live, _} =
                show_live
                |> element("a", "Edit")
                |> render_click()
-               |> follow_redirect(conn, ~p"/subscription_plan/#{subscription_plan}/edit?return_to=show")
+               |> follow_redirect(
+                 conn,
+                 ~p"/subscription_plan/#{subscription_plan}/edit?return_to=show"
+               )
 
       assert render(form_live) =~ "Edit Subscription plan"
 

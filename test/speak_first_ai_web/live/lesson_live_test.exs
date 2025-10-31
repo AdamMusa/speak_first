@@ -4,9 +4,33 @@ defmodule SpeakFirstAiWeb.LessonLiveTest do
   import Phoenix.LiveViewTest
   import SpeakFirstAi.LessonsFixtures
 
-  @create_attrs %{description: "some description", title: "some title", lesson_type: "some lesson_type", lesson_difficulty: "some lesson_difficulty", estimated_minutes: 42, key_vocabulary: %{}, is_active: true}
-  @update_attrs %{description: "some updated description", title: "some updated title", lesson_type: "some updated lesson_type", lesson_difficulty: "some updated lesson_difficulty", estimated_minutes: 43, key_vocabulary: %{}, is_active: false}
-  @invalid_attrs %{description: nil, title: nil, lesson_type: nil, lesson_difficulty: nil, estimated_minutes: nil, key_vocabulary: nil, is_active: false}
+  @create_attrs %{
+    description: "some description",
+    title: "some title",
+    lesson_type: "some lesson_type",
+    lesson_difficulty: "some lesson_difficulty",
+    estimated_minutes: 42,
+    key_vocabulary: %{},
+    is_active: true
+  }
+  @update_attrs %{
+    description: "some updated description",
+    title: "some updated title",
+    lesson_type: "some updated lesson_type",
+    lesson_difficulty: "some updated lesson_difficulty",
+    estimated_minutes: 43,
+    key_vocabulary: %{},
+    is_active: false
+  }
+  @invalid_attrs %{
+    description: nil,
+    title: nil,
+    lesson_type: nil,
+    lesson_difficulty: nil,
+    estimated_minutes: nil,
+    key_vocabulary: nil,
+    is_active: false
+  }
 
   setup :register_and_log_in_user
 

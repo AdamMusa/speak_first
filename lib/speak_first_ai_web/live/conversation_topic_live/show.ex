@@ -14,7 +14,10 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Show do
           <.button navigate={~p"/admin/conversation_topics"}>
             <.icon name="hero-arrow-left" />
           </.button>
-          <.button variant="primary" navigate={~p"/admin/conversation_topics/#{@conversation_topic}/edit?return_to=show"}>
+          <.button
+            variant="primary"
+            navigate={~p"/admin/conversation_topics/#{@conversation_topic}/edit?return_to=show"}
+          >
             <.icon name="hero-pencil-square" /> Edit conversation_topic
           </.button>
         </:actions>
@@ -38,7 +41,10 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Show do
     {:ok,
      socket
      |> assign(:page_title, "Show Conversation topic")
-     |> assign(:conversation_topic, Conversation.get_conversation_topic!(socket.assigns.current_scope, id))}
+     |> assign(
+       :conversation_topic,
+       Conversation.get_conversation_topic!(socket.assigns.current_scope, id)
+     )}
   end
 
   @impl true

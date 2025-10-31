@@ -24,6 +24,11 @@ config :speak_first_ai,
   ecto_repos: [SpeakFirstAi.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+# Configure Stripe
+config :stripity_stripe,
+  api_key: System.get_env("STRIPE_SECRET_KEY", "sk_test_placeholder"),
+  api_base_url: System.get_env("STRIPE_API_BASE_URL", "https://api.stripe.com")
+
 # Configures the endpoint
 config :speak_first_ai, SpeakFirstAiWeb.Endpoint,
   url: [host: "localhost"],

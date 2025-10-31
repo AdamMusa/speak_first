@@ -25,7 +25,9 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Form do
           <.input field={@form[:trial_period_days]} type="number" label="Trial period days" />
           <div class="mt-6 flex items-center gap-3">
             <.button phx-disable-with="Saving..." variant="primary">Save Subscription plan</.button>
-            <.button navigate={return_path(@current_scope, @return_to, @subscription_plan)}>Cancel</.button>
+            <.button navigate={return_path(@current_scope, @return_to, @subscription_plan)}>
+              Cancel
+            </.button>
           </div>
         </.form>
       </div>
@@ -50,7 +52,15 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Form do
     socket
     |> assign(:page_title, "Edit Subscription plan")
     |> assign(:subscription_plan, subscription_plan)
-    |> assign(:form, to_form(SubscriptionPlans.change_subscription_plan(socket.assigns.current_scope, subscription_plan)))
+    |> assign(
+      :form,
+      to_form(
+        SubscriptionPlans.change_subscription_plan(
+          socket.assigns.current_scope,
+          subscription_plan
+        )
+      )
+    )
   end
 
   defp apply_action(socket, :new, _params) do
@@ -59,12 +69,26 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Form do
     socket
     |> assign(:page_title, "New Subscription plan")
     |> assign(:subscription_plan, subscription_plan)
-    |> assign(:form, to_form(SubscriptionPlans.change_subscription_plan(socket.assigns.current_scope, subscription_plan)))
+    |> assign(
+      :form,
+      to_form(
+        SubscriptionPlans.change_subscription_plan(
+          socket.assigns.current_scope,
+          subscription_plan
+        )
+      )
+    )
   end
 
   @impl true
   def handle_event("validate", %{"subscription_plan" => subscription_plan_params}, socket) do
-    changeset = SubscriptionPlans.change_subscription_plan(socket.assigns.current_scope, socket.assigns.subscription_plan, subscription_plan_params)
+    changeset =
+      SubscriptionPlans.change_subscription_plan(
+        socket.assigns.current_scope,
+        socket.assigns.subscription_plan,
+        subscription_plan_params
+      )
+
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
@@ -73,13 +97,22 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Form do
   end
 
   defp save_subscription_plan(socket, :edit, subscription_plan_params) do
-    case SubscriptionPlans.update_subscription_plan(socket.assigns.current_scope, socket.assigns.subscription_plan, subscription_plan_params) do
+    case SubscriptionPlans.update_subscription_plan(
+           socket.assigns.current_scope,
+           socket.assigns.subscription_plan,
+           subscription_plan_params
+         ) do
       {:ok, subscription_plan} ->
         {:noreply,
          socket
          |> put_flash(:info, "Subscription plan updated successfully")
          |> push_navigate(
-           to: return_path(socket.assigns.current_scope, socket.assigns.return_to, subscription_plan)
+           to:
+             return_path(
+               socket.assigns.current_scope,
+               socket.assigns.return_to,
+               subscription_plan
+             )
          )}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -88,13 +121,21 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Form do
   end
 
   defp save_subscription_plan(socket, :new, subscription_plan_params) do
-    case SubscriptionPlans.create_subscription_plan(socket.assigns.current_scope, subscription_plan_params) do
+    case SubscriptionPlans.create_subscription_plan(
+           socket.assigns.current_scope,
+           subscription_plan_params
+         ) do
       {:ok, subscription_plan} ->
         {:noreply,
          socket
          |> put_flash(:info, "Subscription plan created successfully")
          |> push_navigate(
-           to: return_path(socket.assigns.current_scope, socket.assigns.return_to, subscription_plan)
+           to:
+             return_path(
+               socket.assigns.current_scope,
+               socket.assigns.return_to,
+               subscription_plan
+             )
          )}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -103,5 +144,7 @@ defmodule SpeakFirstAiWeb.SubscriptionPlanLive.Form do
   end
 
   defp return_path(_scope, "index", _subscription_plan), do: ~p"/admin/subscription_plans"
-  defp return_path(_scope, "show", subscription_plan), do: ~p"/admin/subscription_plans/#{subscription_plan}"
+
+  defp return_path(_scope, "show", subscription_plan),
+    do: ~p"/admin/subscription_plans/#{subscription_plan}"
 end

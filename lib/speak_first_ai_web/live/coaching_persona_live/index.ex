@@ -19,7 +19,11 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Index do
       <.table
         id="coaching_personas"
         rows={@streams.coaching_personas}
-        row_click={fn {_id, coaching_persona} -> JS.navigate(~p"/admin/coaching_personas/#{coaching_persona}") end}
+        row_click={
+          fn {_id, coaching_persona} ->
+            JS.navigate(~p"/admin/coaching_personas/#{coaching_persona}")
+          end
+        }
       >
         <:col :let={{_id, coaching_persona}} label="Title">{coaching_persona.title}</:col>
         <:col :let={{_id, coaching_persona}} label="Description">{coaching_persona.description}</:col>
@@ -70,7 +74,10 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Index do
   @impl true
   def handle_info({type, %SpeakFirstAi.Coaching.CoachingPersona{}}, socket)
       when type in [:created, :updated, :deleted] do
-    {:noreply, stream(socket, :coaching_personas, list_coaching_personas(socket.assigns.current_scope), reset: true)}
+    {:noreply,
+     stream(socket, :coaching_personas, list_coaching_personas(socket.assigns.current_scope),
+       reset: true
+     )}
   end
 
   defp list_coaching_personas(current_scope) do

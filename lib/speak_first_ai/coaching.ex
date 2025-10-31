@@ -143,7 +143,11 @@ defmodule SpeakFirstAi.Coaching do
       %Ecto.Changeset{data: %CoachingPersona{}}
 
   """
-  def change_coaching_persona(%Scope{} = scope, %CoachingPersona{} = coaching_persona, attrs \\ %{}) do
+  def change_coaching_persona(
+        %Scope{} = scope,
+        %CoachingPersona{} = coaching_persona,
+        attrs \\ %{}
+      ) do
     true = coaching_persona.user_id == scope.user.id
 
     CoachingPersona.changeset(coaching_persona, attrs, scope)

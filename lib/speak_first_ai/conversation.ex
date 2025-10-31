@@ -97,7 +97,11 @@ defmodule SpeakFirstAi.Conversation do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_conversation_topic(%Scope{} = scope, %ConversationTopic{} = conversation_topic, attrs) do
+  def update_conversation_topic(
+        %Scope{} = scope,
+        %ConversationTopic{} = conversation_topic,
+        attrs
+      ) do
     true = conversation_topic.user_id == scope.user.id
 
     with {:ok, conversation_topic = %ConversationTopic{}} <-
@@ -140,7 +144,11 @@ defmodule SpeakFirstAi.Conversation do
       %Ecto.Changeset{data: %ConversationTopic{}}
 
   """
-  def change_conversation_topic(%Scope{} = scope, %ConversationTopic{} = conversation_topic, attrs \\ %{}) do
+  def change_conversation_topic(
+        %Scope{} = scope,
+        %ConversationTopic{} = conversation_topic,
+        attrs \\ %{}
+      ) do
     true = conversation_topic.user_id == scope.user.id
 
     ConversationTopic.changeset(conversation_topic, attrs, scope)
