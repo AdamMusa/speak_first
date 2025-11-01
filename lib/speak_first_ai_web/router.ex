@@ -66,6 +66,20 @@ defmodule SpeakFirstAiWeb.Router do
 
   ## Authentication routes
 
+  # User settings routes - use browser layout, not admin
+  scope "/", SpeakFirstAiWeb do
+    pipe_through :browser
+
+    live_session :require_authenticated_user_settings,
+      on_mount: [{SpeakFirstAiWeb.UserAuth, :require_authenticated}] do
+      live "/users/settings", UserLive.Settings, :edit
+      live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
+    end
+
+    post "/users/update-password", UserSessionController, :update_password
+  end
+
+  # Admin routes - use admin layout
   scope "/", SpeakFirstAiWeb do
     pipe_through :admin
 
@@ -74,9 +88,6 @@ defmodule SpeakFirstAiWeb.Router do
         {SpeakFirstAiWeb.UserAuth, :require_authenticated},
         {SpeakFirstAiWeb.LiveAdminHooks, :assign_current_path}
       ] do
-      live "/users/settings", UserLive.Settings, :edit
-      live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
-
       ## Admin Dashboard
       live "/admin", AdminDashboardLive, :index
 
@@ -112,8 +123,6 @@ defmodule SpeakFirstAiWeb.Router do
       live "/admin/subscription_plans/:id", SubscriptionPlanLive.Show, :show
       live "/admin/subscription_plans/:id/show/edit", SubscriptionPlanLive.Form, :edit
     end
-
-    post "/users/update-password", UserSessionController, :update_password
   end
 
   scope "/", SpeakFirstAiWeb do
