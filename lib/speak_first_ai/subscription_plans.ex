@@ -46,12 +46,11 @@ defmodule SpeakFirstAi.SubscriptionPlans do
   end
 
   @doc """
-  Returns list of active subscription plans (public, no scope required).
+  Returns list of all subscription plans (public, no scope required).
   Used for landing page and public pricing display.
   """
   def list_active_plans do
     from(sp in SubscriptionPlan,
-      where: sp.active == true,
       order_by: [asc: sp.price_cents]
     )
     |> Repo.all()

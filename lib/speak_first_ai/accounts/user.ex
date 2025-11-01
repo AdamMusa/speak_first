@@ -60,6 +60,41 @@ defmodule SpeakFirstAi.Accounts.User do
   end
 
   @doc """
+  A user changeset for registration with email and password.
+
+  ## Options
+
+    * `:hash_password` - Hashes the password so it can be stored securely.
+      Defaults to `true`.
+    * `:validate_unique` - Set to false if you don't want to validate the
+      uniqueness of the email. Defaults to `true`.
+  """
+  def registration_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:email, :password])
+    |> validate_email_registration(opts)
+    |> validate_password(opts)
+  end
+
+  defp validate_email_registration(changeset, opts) do
+    changeset =
+      changeset
+      |> validate_required([:email])
+      |> validate_format(:email, ~r/^[^@,;\s]+@[^@,;\s]+$/,
+        message: "must have the @ sign and no spaces"
+      )
+      |> validate_length(:email, max: 160)
+
+    if Keyword.get(opts, :validate_unique, true) do
+      changeset
+      |> unsafe_validate_unique(:email, SpeakFirstAi.Repo)
+      |> unique_constraint(:email)
+    else
+      changeset
+    end
+  end
+
+  @doc """
   A user changeset for changing the password.
 
   It is important to validate the length of the password, as long passwords may

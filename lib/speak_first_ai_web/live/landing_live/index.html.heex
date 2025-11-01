@@ -323,88 +323,88 @@
         </div>
 
         <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <%!-- Pro Plan (Highlighted) --%>
-          <div class="relative bg-gray-900 rounded-3xl p-8 shadow-2xl transform scale-105 hover:scale-110 transition-all duration-300">
-            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <span class="bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-bold shadow-lg">
-                Most Popular
-              </span>
-            </div>
-            <h3 class="text-2xl font-bold text-white mb-2">Pro</h3>
-            <div class="mb-6">
-              <span class="text-4xl font-bold text-white">
-                {if @billing_period == :monthly, do: "$19", else: "$15"}
-              </span>
-              <span class="text-blue-100">/month</span>
-            </div>
-            <ul class="space-y-4 mb-8">
-              <li class="flex items-start gap-3">
-                <.icon name="hero-check-circle" class="w-6 h-6 text-white flex-shrink-0 mt-0.5" />
-                <span class="text-white">Unlimited conversations</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <.icon name="hero-check-circle" class="w-6 h-6 text-white flex-shrink-0 mt-0.5" />
-                <span class="text-white">Grammar feedback</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <.icon name="hero-check-circle" class="w-6 h-6 text-white flex-shrink-0 mt-0.5" />
-                <span class="text-white">Progress tracking</span>
-              </li>
-            </ul>
-            <.link
-              navigate={~p"/subscriptions"}
-              class="w-full py-3 px-6 bg-white text-gray-900 rounded-full font-semibold hover:bg-gray-100 transition-colors shadow-lg inline-flex justify-center"
-            >
-              Subscribe Now
-            </.link>
-          </div>
+          <%= for plan <- @plans do %>
+            <% is_pro = String.downcase(plan.name) == "pro" %>
+            <% is_dark = is_pro %>
 
-          <%!-- Ultimate Plan --%>
-          <div class="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Ultimate</h3>
-            <div class="mb-6">
-              <span class="text-4xl font-bold text-gray-900 dark:text-white">
-                {if @billing_period == :monthly, do: "$49", else: "$39"}
-              </span>
-              <span class="text-gray-600 dark:text-gray-400">/month</span>
+            <div class={[
+              "relative rounded-3xl p-8 transition-all duration-300",
+              if(is_dark,
+                do: "bg-gray-900 shadow-2xl transform scale-105 hover:scale-110",
+                else: "bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl"
+              )
+            ]}>
+              <%= if is_pro do %>
+                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <span class="bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-bold shadow-lg">
+                    Most Popular
+                  </span>
+                </div>
+              <% end %>
+
+              <h3 class={[
+                "text-2xl font-bold mb-2",
+                if(is_dark, do: "text-white", else: "text-gray-900 dark:text-white")
+              ]}>
+                {plan.name}
+              </h3>
+
+              <div class="mb-6">
+                <% price_display =
+                  if plan.price_cents && plan.price_cents > 0 do
+                    amount = Float.round(plan.price_cents / 100, 2)
+                    :erlang.float_to_binary(amount, [{:decimals, 2}])
+                  else
+                    "0"
+                  end %>
+                <span class={[
+                  "text-4xl font-bold",
+                  if(is_dark, do: "text-white", else: "text-gray-900 dark:text-white")
+                ]}>
+                  ${price_display}
+                </span>
+                <span class={[
+                  if(is_dark, do: "text-blue-100", else: "text-gray-600 dark:text-gray-400")
+                ]}>
+                  /{plan.interval}
+                </span>
+              </div>
+
+              <%= if plan.description do %>
+                <div class={[
+                  "mb-6 text-sm whitespace-pre-line",
+                  if(is_dark, do: "text-blue-100", else: "text-gray-600 dark:text-gray-300")
+                ]}>
+                  {plan.description}
+                </div>
+              <% end %>
+
+              <.link
+                navigate={~p"/subscriptions?plan_id=#{plan.stripe_price_id}"}
+                class={[
+                  "w-full py-3 px-6 rounded-full font-semibold transition-colors shadow-lg inline-flex justify-center",
+                  if(is_dark,
+                    do: "bg-white text-gray-900 hover:bg-gray-100",
+                    else: "bg-gray-900 text-white hover:bg-gray-800"
+                  )
+                ]}
+              >
+                <%= if plan.trial_period_days && plan.trial_period_days > 0 do %>
+                  Start Free Trial
+                <% else %>
+                  Subscribe Now
+                <% end %>
+              </.link>
             </div>
-            <ul class="space-y-4 mb-8">
-              <li class="flex items-start gap-3">
-                <.icon
-                  name="hero-check-circle"
-                  class="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5"
-                />
-                <span class="text-gray-600 dark:text-gray-300">Everything in Pro</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <.icon
-                  name="hero-check-circle"
-                  class="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5"
-                />
-                <span class="text-gray-600 dark:text-gray-300">1:1 AI coach</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <.icon
-                  name="hero-check-circle"
-                  class="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5"
-                />
-                <span class="text-gray-600 dark:text-gray-300">Personalized lessons</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <.icon
-                  name="hero-check-circle"
-                  class="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5"
-                />
-                <span class="text-gray-600 dark:text-gray-300">Pronunciation insights</span>
-              </li>
-            </ul>
-            <.link
-              navigate={~p"/subscriptions"}
-              class="w-full py-3 px-6 bg-gray-900 text-white rounded-full font-semibold hover:bg-gray-800 transition-colors shadow-lg inline-flex justify-center"
-            >
-              Subscribe Now
-            </.link>
-          </div>
+          <% end %>
+
+          <%= if Enum.empty?(@plans) do %>
+            <div class="col-span-2 text-center py-12">
+              <p class="text-gray-600 dark:text-gray-300 text-lg">
+                No subscription plans available at this time.
+              </p>
+            </div>
+          <% end %>
         </div>
       </div>
     </section>

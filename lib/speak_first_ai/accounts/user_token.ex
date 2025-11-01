@@ -5,12 +5,15 @@ defmodule SpeakFirstAi.Accounts.UserToken do
 
   @hash_algorithm :sha256
   @rand_size 32
+  @api_token_size 64
 
   # It is very important to keep the magic link token expiry short,
   # since someone with access to the email may take over the account.
   @magic_link_validity_in_minutes 15
   @change_email_validity_in_days 7
   @session_validity_in_days 14
+  @access_token_validity_in_minutes 15
+  @refresh_token_validity_in_days 14
 
   schema "users_tokens" do
     field :token, :binary
@@ -61,6 +64,56 @@ defmodule SpeakFirstAi.Accounts.UserToken do
         join: user in assoc(token, :user),
         where: token.inserted_at > ago(@session_validity_in_days, "day"),
         select: {%{user | authenticated_at: token.authenticated_at}, token.inserted_at}
+
+    {:ok, query}
+  end
+
+  @doc """
+  Generates an access token for API usage.
+  Access tokens have a shorter validity period (15 minutes).
+  Uses 64 bytes (512 bits) for better security and readability.
+  """
+  def build_access_token(user) do
+    token = :crypto.strong_rand_bytes(@api_token_size)
+    dt = user.authenticated_at || DateTime.utc_now(:second)
+    {token, %UserToken{token: token, context: "access", user_id: user.id, authenticated_at: dt}}
+  end
+
+  @doc """
+  Generates a refresh token for API usage.
+  Refresh tokens have a longer validity period (14 days).
+  Uses 64 bytes (512 bits) for better security and readability.
+  """
+  def build_refresh_token(user) do
+    token = :crypto.strong_rand_bytes(@api_token_size)
+    dt = user.authenticated_at || DateTime.utc_now(:second)
+    {token, %UserToken{token: token, context: "refresh", user_id: user.id, authenticated_at: dt}}
+  end
+
+  @doc """
+  Verifies an access token and returns its underlying lookup query.
+  Access tokens are valid for 15 minutes.
+  """
+  def verify_access_token_query(token) do
+    query =
+      from token in by_token_and_context_query(token, "access"),
+        join: user in assoc(token, :user),
+        where: token.inserted_at > ago(@access_token_validity_in_minutes, "minute"),
+        select: {%{user | authenticated_at: token.authenticated_at}, token.inserted_at}
+
+    {:ok, query}
+  end
+
+  @doc """
+  Verifies a refresh token and returns its underlying lookup query.
+  Refresh tokens are valid for 14 days.
+  """
+  def verify_refresh_token_query(token) do
+    query =
+      from token in by_token_and_context_query(token, "refresh"),
+        join: user in assoc(token, :user),
+        where: token.inserted_at > ago(@refresh_token_validity_in_days, "day"),
+        select: {user, token}
 
     {:ok, query}
   end

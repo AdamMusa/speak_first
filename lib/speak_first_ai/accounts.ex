@@ -80,6 +80,27 @@ defmodule SpeakFirstAi.Accounts do
     |> Repo.insert()
   end
 
+  @doc """
+  Registers a user with email and password for API usage.
+
+  Auto-confirms the user account.
+
+  ## Examples
+
+      iex> register_user_with_password(%{email: "user@example.com", password: "password123456"})
+      {:ok, %User{}}
+
+      iex> register_user_with_password(%{email: "invalid"})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def register_user_with_password(attrs) do
+    %User{}
+    |> User.registration_changeset(attrs)
+    |> User.confirm_changeset()
+    |> Repo.insert()
+  end
+
   ## Settings
 
   @doc """
@@ -186,6 +207,60 @@ defmodule SpeakFirstAi.Accounts do
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
     Repo.one(query)
+  end
+
+  ## API Tokens
+
+  @doc """
+  Generates both access and refresh tokens for API usage.
+  Returns {access_token, refresh_token} as binaries.
+  """
+  def generate_api_tokens(user) do
+    {access_token, access_user_token} = UserToken.build_access_token(user)
+    {refresh_token, refresh_user_token} = UserToken.build_refresh_token(user)
+
+    Repo.transaction(fn ->
+      Repo.insert!(access_user_token)
+      Repo.insert!(refresh_user_token)
+    end)
+
+    {access_token, refresh_token}
+  end
+
+  @doc """
+  Gets the user with the given access token.
+
+  If the token is valid `{user, token_inserted_at}` is returned, otherwise `nil` is returned.
+  """
+  def get_user_by_access_token(token) do
+    {:ok, query} = UserToken.verify_access_token_query(token)
+    Repo.one(query)
+  end
+
+  @doc """
+  Refreshes an access token using a refresh token.
+
+  Returns `{:ok, {access_token, refresh_token}}` if successful,
+  or `{:error, reason}` if the refresh token is invalid.
+  """
+  def refresh_access_token(refresh_token) do
+    case Base.url_decode64(refresh_token, padding: false) do
+      {:ok, decoded_token} ->
+        with {:ok, query} <- UserToken.verify_refresh_token_query(decoded_token),
+             {user, old_refresh_token} <- Repo.one(query) do
+          # Delete the old refresh token (one-time use)
+          Repo.delete!(old_refresh_token)
+
+          # Generate new access and refresh tokens
+          {new_access_token, new_refresh_token} = generate_api_tokens(user)
+          {:ok, {new_access_token, new_refresh_token}}
+        else
+          _ -> {:error, :invalid_token}
+        end
+
+      :error ->
+        {:error, :invalid_token}
+    end
   end
 
   @doc """

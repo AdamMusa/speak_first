@@ -7,6 +7,10 @@ defmodule SpeakFirstAi.Application do
 
   @impl true
   def start(_type, _args) do
+    # Load .env file in development
+    if Mix.env() == :dev do
+      Dotenv.load!()
+    end
     children = [
       SpeakFirstAiWeb.Telemetry,
       SpeakFirstAi.Repo,

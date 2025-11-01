@@ -39,10 +39,13 @@ defmodule SpeakFirstAiWeb.Router do
     post "/stripe", StripeWebhookController, :create
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", SpeakFirstAiWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", SpeakFirstAiWeb do
+    pipe_through :api
+
+    post "/auth/register", ApiAuthController, :register
+    post "/auth/login", ApiAuthController, :login
+    post "/auth/refresh", ApiAuthController, :refresh
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:speak_first_ai, :dev_routes) do
