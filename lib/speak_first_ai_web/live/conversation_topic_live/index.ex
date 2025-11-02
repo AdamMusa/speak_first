@@ -10,9 +10,16 @@ defmodule SpeakFirstAiWeb.ConversationTopicLive.Index do
       <.header>
         Listing Conversations
         <:actions>
-          <.button variant="primary" navigate={~p"/admin/conversation_topics/new"}>
-            <.icon name="hero-plus" /> New Conversation topic
-          </.button>
+          <.link
+            navigate={~p"/admin/conversation_topics/new"}
+            class="group relative inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-2xl bg-gradient-to-r from-gray-900 to-gray-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 transform overflow-hidden"
+          >
+            <span class="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            <span class="relative flex items-center gap-2">
+              <.icon name="hero-plus" class="w-5 h-5" />
+              New Conversation topic
+            </span>
+          </.link>
         </:actions>
       </.header>
 

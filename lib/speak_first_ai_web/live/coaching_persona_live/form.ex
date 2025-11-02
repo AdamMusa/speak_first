@@ -7,21 +7,34 @@ defmodule SpeakFirstAiWeb.CoachingPersonaLive.Form do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="max-w-3xl mx-auto">
-      <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="bg-white border-2 border-gray-100 rounded-3xl shadow-xl p-8 lg:p-10">
         <.header>
           {@page_title}
-          <:subtitle>Use this form to manage coaching_persona records in your database.</:subtitle>
+          <:subtitle>Use this form to manage coaching persona records in your database.</:subtitle>
         </.header>
 
-        <.form for={@form} id="coaching_persona-form" phx-change="validate" phx-submit="save">
+        <.form for={@form} id="coaching_persona-form" phx-change="validate" phx-submit="save" class="mt-8 space-y-6">
           <.input field={@form[:title]} type="text" label="Title" />
           <.input field={@form[:description]} type="textarea" label="Description" />
-          <div class="mt-6 flex items-center gap-3">
-            <.button phx-disable-with="Saving..." variant="primary">Save Coaching persona</.button>
-            <.button navigate={return_path(@current_scope, @return_to, @coaching_persona)}>
+          <div class="mt-8 flex items-center gap-4 pt-6 border-t border-gray-200">
+            <button
+              type="submit"
+              phx-disable-with="Saving..."
+              class="group relative inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold rounded-2xl bg-gradient-to-r from-gray-900 to-gray-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 transform overflow-hidden"
+            >
+              <span class="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              <span class="relative flex items-center gap-2">
+                <.icon name="hero-check" class="w-5 h-5" />
+                Save Coaching persona
+              </span>
+            </button>
+            <.link
+              navigate={return_path(@current_scope, @return_to, @coaching_persona)}
+              class="px-6 py-3 text-sm font-semibold rounded-2xl border-2 border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50 transition-all duration-300 hover:scale-105 transform shadow-sm"
+            >
               Cancel
-            </.button>
+            </.link>
           </div>
         </.form>
       </div>
