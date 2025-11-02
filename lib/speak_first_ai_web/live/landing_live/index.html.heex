@@ -1,152 +1,139 @@
 <Layouts.app flash={@flash} current_scope={@current_scope}>
-  <div class="min-h-screen w-screen bg-white relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
+  <div class="min-h-screen w-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
     <%!-- Hero Section --%>
-    <section class="relative overflow-hidden bg-white py-20 sm:py-32">
-      <%!-- Decorative gradient blobs --%>
+    <section class="relative min-h-[90vh] flex items-center py-20 sm:py-32 overflow-hidden">
+      <%!-- Animated Background Elements --%>
       <div class="pointer-events-none absolute inset-0 -z-10">
         <div
-          class="absolute -top-24 -left-24 h-80 w-80 rounded-full bg-gradient-to-tr from-blue-500/20 to-purple-500/20 blur-3xl animate-float"
+          class="absolute top-20 -left-32 h-96 w-96 rounded-full bg-gradient-to-br from-blue-400/30 via-purple-400/20 to-pink-400/30 blur-3xl animate-float"
           style="animation-delay: 0ms"
         >
         </div>
         <div
-          class="absolute -bottom-24 -right-16 h-80 w-80 rounded-full bg-gradient-to-tr from-purple-500/20 to-pink-500/20 blur-3xl animate-float"
-          style="animation-delay: 600ms"
+          class="absolute bottom-20 -right-32 h-[500px] w-[500px] rounded-full bg-gradient-to-tr from-purple-400/25 via-indigo-400/20 to-blue-400/25 blur-3xl animate-float"
+          style="animation-delay: 800ms"
+        >
+        </div>
+        <div
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-gradient-to-r from-blue-200/15 to-purple-200/15 blur-3xl animate-float"
+          style="animation-delay: 400ms"
         >
         </div>
       </div>
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-          <div class="text-center lg:text-left">
-            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-              Learn a new language the natural way —
-              <span class="text-gray-900">
-                Speak First
+
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <%!-- Left Column: Content --%>
+          <div class="text-center lg:text-left space-y-8">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-sm font-medium mb-4">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+              </span>
+              Now available on iOS & Android
+            </div>
+
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 tracking-tight leading-[1.1]">
+              Speak First,
+              <span class="block mt-2 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                Learn Naturally
               </span>
             </h1>
-            <p class="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-              Practice real conversations powered by AI, learn to express yourself before grammar rules.
+
+            <p class="text-xl sm:text-2xl text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
+              Master languages through real conversations. Practice with AI that listens, responds, and guides you like a patient native speaker.
             </p>
 
-            <button
-              phx-click="start_free"
-              class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gray-900 rounded-full shadow-lg hover:bg-gray-800 transition-all duration-300 hover:scale-105 transform"
-            >
-              Start Free
-              <.icon
-                name="hero-arrow-right"
-                class="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform"
-              />
-            </button>
-            <div class="mt-6 text-gray-500 text-sm">No credit card required</div>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <button
+                phx-click="start_free"
+                class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] transform overflow-hidden"
+              >
+                <span class="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                <span class="relative flex items-center gap-2">
+                  Get Started
+                  <.icon
+                    name="hero-arrow-right"
+                    class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"
+                  />
+                </span>
+              </button>
+              <a
+                href="#features"
+                class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-gray-900 bg-white border-2 border-gray-200 rounded-2xl hover:border-gray-300 hover:bg-gray-50 transition-all duration-300 hover:scale-[1.02] transform shadow-sm hover:shadow-md"
+              >
+                See How It Works
+                <.icon
+                  name="hero-chevron-down"
+                  class="ml-2 w-5 h-5 text-gray-600"
+                />
+              </a>
+            </div>
           </div>
 
-          <%!-- AI Chat Illustration --%>
-          <div class="relative flex justify-center lg:justify-end">
+          <%!-- Right Column: Interactive Chat Preview --%>
+          <div class="relative flex justify-center lg:justify-end mt-12 lg:mt-0">
             <div class="relative w-full max-w-lg">
-              <%!-- Chat Bubbles --%>
-              <div class="space-y-4 relative z-10">
+              <%!-- Glass morphism container --%>
+              <div class="relative backdrop-blur-xl bg-white/80 rounded-3xl shadow-2xl border border-white/20 p-8 space-y-4 animate-fade-in-up">
+                <%!-- AI Message --%>
                 <div
-                  class="bg-white dark:bg-gray-800 rounded-2xl rounded-bl-none p-6 shadow-xl animate-fade-in-up"
+                  class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl rounded-bl-sm p-6 shadow-lg animate-fade-in-up"
                   style="animation-delay: 0.1s"
                 >
-                  <div class="flex items-start gap-3">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                  <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0 shadow-lg">
                       <.icon name="hero-chat-bubble-left-right" class="w-6 h-6 text-white" />
                     </div>
-                    <div class="flex-1">
-                      <p class="text-gray-700 dark:text-gray-200">Hey! How are you today?</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  class="bg-gray-900 text-white rounded-2xl rounded-br-none p-6 shadow-xl ml-auto w-4/5 animate-fade-in-up"
-                  style="animation-delay: 0.3s"
-                >
-                  <p class="text-white">Estoy bien, gracias. ¿Y tú?</p>
-                </div>
-
-                <div
-                  class="bg-white dark:bg-gray-800 rounded-2xl rounded-bl-none p-6 shadow-xl animate-fade-in-up"
-                  style="animation-delay: 0.5s"
-                >
-                  <div class="flex items-start gap-3">
-                    <div class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center flex-shrink-0">
-                      <.icon name="hero-chat-bubble-left-right" class="w-6 h-6 text-white" />
-                    </div>
-                    <div class="flex-1">
-                      <p class="text-gray-700 dark:text-gray-200">
-                        Great! We'll keep practicing in English — reply naturally in your language.
+                    <div class="flex-1 pt-1">
+                      <p class="text-gray-800 font-medium leading-relaxed">
+                        Hey! How are you today? ¿Qué tal tu día?
                       </p>
                     </div>
                   </div>
                 </div>
+
+                <%!-- User Message --%>
+                <div
+                  class="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl rounded-br-sm p-6 shadow-lg ml-auto w-5/6 animate-fade-in-up"
+                  style="animation-delay: 0.3s"
+                >
+                  <p class="text-white font-medium">Estoy bien, gracias. ¿Y tú?</p>
+                </div>
+
+                <%!-- AI Response --%>
+                <div
+                  class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl rounded-bl-sm p-6 shadow-lg animate-fade-in-up"
+                  style="animation-delay: 0.5s"
+                >
+                  <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <.icon name="hero-chat-bubble-left-right" class="w-6 h-6 text-white" />
+                    </div>
+                    <div class="flex-1 pt-1">
+                      <p class="text-gray-800 font-medium leading-relaxed">
+                        Excellent! I'll keep responding in English while you practice Spanish. Let's continue!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <%!-- Typing Indicator --%>
+                <div class="flex items-center gap-2 pl-4 animate-fade-in-up" style="animation-delay: 0.7s">
+                  <div class="flex gap-1">
+                    <div class="w-2 h-2 bg-gray-400 rounded-full animate-wave" data-delay="0"></div>
+                    <div class="w-2 h-2 bg-gray-400 rounded-full animate-wave" data-delay="150"></div>
+                    <div class="w-2 h-2 bg-gray-400 rounded-full animate-wave" data-delay="300"></div>
+                  </div>
+                  <span class="text-xs text-gray-500 ml-2">AI is typing...</span>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <%!-- Logos strip --%>
-    <section class="py-8 sm:py-10 bg-white">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-wrap items-center justify-center gap-8 opacity-70">
-          <div class="h-8 w-28 bg-gray-200 rounded"></div>
-          <div class="h-8 w-28 bg-gray-200 rounded"></div>
-          <div class="h-8 w-28 bg-gray-200 rounded"></div>
-          <div class="h-8 w-28 bg-gray-200 rounded"></div>
-          <div class="h-8 w-28 bg-gray-200 rounded"></div>
-        </div>
-      </div>
-    </section>
-
-    <%!-- Android/iOS App Promotion Section --%>
-    <section id="download" class="bg-gray-50 py-14 sm:py-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col items-center text-center gap-8">
-          <div class="w-full max-w-2xl">
-            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Get SpeakFirst on Mobile
-            </h2>
-            <p class="text-base sm:text-lg text-gray-700 mb-6">
-              Learn on the go with a smooth, mobile-optimized experience. Available on
-              <span class="font-semibold text-gray-900">Android</span>
-              and <span class="font-semibold text-gray-900">iOS</span>.
-            </p>
-
-            <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
-              <.link
-                navigate="https://play.google.com/store/apps/details?id=com.speakfirstai"
-                class="flex items-center gap-3 px-6 sm:px-7 py-3.5 sm:py-4 bg-gray-900 hover:bg-gray-800 text-white rounded-2xl font-semibold shadow-lg transition duration-150 w-full sm:w-auto justify-center group"
-              >
-                <.icon
-                  name="hero-device-phone-mobile"
-                  class="w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:scale-110 transition-transform"
-                />
-                <span>
-                  Download for Android
-                  <span class="block text-[10px] sm:text-xs font-normal mt-0.5 sm:mt-1 text-gray-300">
-                    Google Play
-                  </span>
-                </span>
-              </.link>
-              <.link
-                navigate="https://apps.apple.com/app/speakfirst-ai/id0000000000"
-                class="flex items-center gap-3 px-6 sm:px-7 py-3.5 sm:py-4 border border-gray-300 hover:bg-gray-50 text-gray-900 rounded-2xl font-semibold shadow-lg transition duration-150 w-full sm:w-auto justify-center group"
-              >
-                <.icon
-                  name="hero-device-phone-mobile"
-                  class="w-6 h-6 sm:w-7 sm:h-7 text-gray-600 group-hover:text-gray-700 transition-colors"
-                />
-                <span>
-                  Download for iOS
-                  <span class="block text-[10px] sm:text-xs font-normal mt-0.5 sm:mt-1 text-gray-400">
-                    App Store
-                  </span>
-                </span>
-              </.link>
+              <%!-- Floating badge --%>
+              <div class="absolute -top-4 -right-4 bg-white rounded-full px-4 py-2 shadow-xl border border-gray-100 flex items-center gap-2 animate-float">
+                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span class="text-sm font-semibold text-gray-900">AI Powered</span>
+              </div>
             </div>
           </div>
         </div>
@@ -154,149 +141,164 @@
     </section>
 
     <%!-- How It Works Section --%>
-    <section id="features" class="py-20 sm:py-32 bg-white">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="features" class="py-24 sm:py-32 bg-white relative overflow-hidden">
+      <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-blue-50/30 to-transparent"></div>
+      
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center mb-16">
-          <h2 class="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            How it works
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-sm font-medium mb-6">
+            <span>How it works</span>
+          </div>
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+            Learn naturally,
+            <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              step by step
+            </span>
           </h2>
-          <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Learn naturally, just like children do
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Three simple steps to language mastery. No grammar drills. No memorization. Just natural conversation.
           </p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
+        <div class="grid md:grid-cols-3 gap-8 lg:gap-10">
           <%!-- Step 1 --%>
-          <div class="group relative bg-white border border-gray-200 rounded-3xl p-8 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-2">
-            <div class="absolute top-4 right-4 w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+          <div class="group relative bg-gradient-to-br from-white to-blue-50/50 border-2 border-gray-100 rounded-3xl p-8 lg:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-blue-200">
+            <div class="absolute -top-6 -right-6 w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white font-bold text-3xl shadow-xl rotate-6 group-hover:rotate-12 transition-transform duration-500">
               1
             </div>
-            <div class="mb-6">
-              <.icon name="hero-microphone" class="w-16 h-16 text-blue-600 dark:text-blue-400" />
+            <div class="mb-6 transform group-hover:scale-110 transition-transform duration-300">
+              <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
+                <.icon name="hero-microphone" class="w-10 h-10 text-blue-600" />
+              </div>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Speak
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">
+              Speak Naturally
             </h3>
-            <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-              Practice with an AI that listens and responds like a native speaker.
+            <p class="text-gray-600 text-lg leading-relaxed">
+              Start conversations in your native language. The AI responds naturally, creating an immersive learning environment from day one.
             </p>
           </div>
 
           <%!-- Step 2 --%>
-          <div class="group relative bg-white border border-gray-200 rounded-3xl p-8 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-2">
-            <div class="absolute top-4 right-4 w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+          <div class="group relative bg-gradient-to-br from-white to-purple-50/50 border-2 border-gray-100 rounded-3xl p-8 lg:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-purple-200">
+            <div class="absolute -top-6 -right-6 w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center text-white font-bold text-3xl shadow-xl rotate-6 group-hover:rotate-12 transition-transform duration-500">
               2
             </div>
-            <div class="mb-6">
-              <.icon
-                name="hero-light-bulb"
-                class="w-16 h-16 text-purple-600 dark:text-purple-400"
-              />
+            <div class="mb-6 transform group-hover:scale-110 transition-transform duration-300">
+              <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
+                <.icon
+                  name="hero-light-bulb"
+                  class="w-10 h-10 text-purple-600"
+                />
+              </div>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Learn
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">
+              Learn in Flow
             </h3>
-            <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-              Get gentle corrections and natural feedback as you speak.
+            <p class="text-gray-600 text-lg leading-relaxed">
+              Receive gentle corrections and natural feedback as you speak. Learn grammar through context, not memorization.
             </p>
           </div>
 
           <%!-- Step 3 --%>
-          <div class="group relative bg-white border border-gray-200 rounded-3xl p-8 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-2">
-            <div class="absolute top-4 right-4 w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+          <div class="group relative bg-gradient-to-br from-white to-indigo-50/50 border-2 border-gray-100 rounded-3xl p-8 lg:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-indigo-200">
+            <div class="absolute -top-6 -right-6 w-20 h-20 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl flex items-center justify-center text-white font-bold text-3xl shadow-xl rotate-6 group-hover:rotate-12 transition-transform duration-500">
               3
             </div>
-            <div class="mb-6">
-              <.icon name="hero-trophy" class="w-16 h-16 text-pink-600 dark:text-pink-400" />
+            <div class="mb-6 transform group-hover:scale-110 transition-transform duration-300">
+              <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-100 to-blue-100 flex items-center justify-center">
+                <.icon name="hero-trophy" class="w-10 h-10 text-indigo-600" />
+              </div>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Master
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">
+              Master Confidently
             </h3>
-            <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-              Track progress and learn grammar as you go, building confidence naturally.
+            <p class="text-gray-600 text-lg leading-relaxed">
+              Track your progress, build confidence, and speak fluently. Short sessions, measurable improvements, lasting results.
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    <%!-- Testimonials --%>
-    <section class="py-20 sm:py-28 bg-gray-50">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-          <h2 class="text-4xl sm:text-5xl font-bold text-gray-900">
-            Loved by learners worldwide
+    <%!-- Mobile App Section --%>
+    <section id="download" class="py-24 sm:py-32 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+      <div class="pointer-events-none absolute inset-0">
+        <div class="absolute top-0 left-1/4 h-96 w-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-1/4 h-96 w-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+      </div>
+
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-sm font-medium mb-6">
+            <span>Mobile Experience</span>
+          </div>
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight">
+            Learn on the go
           </h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-            Real conversations, real confidence.
+          <p class="text-xl text-gray-300 mb-8 leading-relaxed max-w-2xl mx-auto">
+            Practice anywhere, anytime. Our mobile app delivers the same powerful learning experience optimized for your phone.
           </p>
-        </div>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="bg-white rounded-3xl p-8 shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="h-10 w-10 rounded-full bg-gray-200"></div>
-              <div class="text-sm">
-                <div class="font-semibold text-gray-900">Alex</div>
-                <div class="text-gray-500">Spanish learner</div>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <.link
+              navigate="https://play.google.com/store/apps/details?id=com.speakfirstai"
+              class="group flex items-center gap-3 px-6 py-4 bg-white hover:bg-gray-50 text-gray-900 rounded-2xl font-semibold shadow-xl transition-all duration-300 hover:scale-105 transform"
+            >
+              <.icon
+                name="hero-device-phone-mobile"
+                class="w-7 h-7 group-hover:scale-110 transition-transform"
+              />
+              <div class="text-left">
+                <div class="text-sm text-gray-500">Download on</div>
+                <div class="font-bold text-lg">Google Play</div>
               </div>
-            </div>
-            <p class="text-gray-700">
-              In two weeks I felt more comfortable speaking than in months of grammar drills.
-            </p>
-          </div>
-          <div class="bg-white rounded-3xl p-8 shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="h-10 w-10 rounded-full bg-gray-200"></div>
-              <div class="text-sm">
-                <div class="font-semibold text-gray-900">Mina</div>
-                <div class="text-gray-500">English learner</div>
+            </.link>
+            <.link
+              navigate="https://apps.apple.com/app/speakfirst-ai/id0000000000"
+              class="group flex items-center gap-3 px-6 py-4 bg-white hover:bg-gray-50 text-gray-900 rounded-2xl font-semibold shadow-xl transition-all duration-300 hover:scale-105 transform"
+            >
+              <.icon
+                name="hero-device-phone-mobile"
+                class="w-7 h-7 group-hover:scale-110 transition-transform"
+              />
+              <div class="text-left">
+                <div class="text-sm text-gray-500">Download on</div>
+                <div class="font-bold text-lg">App Store</div>
               </div>
-            </div>
-            <p class="text-gray-700">
-              The gentle corrections keep me in flow. It feels like chatting with a patient friend.
-            </p>
-          </div>
-          <div class="bg-white rounded-3xl p-8 shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="h-10 w-10 rounded-full bg-gray-200"></div>
-              <div class="text-sm">
-                <div class="font-semibold text-gray-900">Ken</div>
-                <div class="text-gray-500">Japanese learner</div>
-              </div>
-            </div>
-            <p class="text-gray-700">
-              Short daily sessions and I can finally speak without freezing.
-            </p>
+            </.link>
           </div>
         </div>
       </div>
     </section>
 
-    <%!-- Subscription Plans Section --%>
+    <%!-- Pricing Section --%>
     <section
       id="pricing"
-      class="py-20 sm:py-32 bg-gray-50"
+      class="py-24 sm:py-32 bg-gradient-to-b from-gray-50 to-white"
     >
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-          <h2 class="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-sm font-medium mb-6">
+            <span>Pricing</span>
+          </div>
+          <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-6">
             Choose your plan
           </h2>
-          <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+          <p class="text-xl text-gray-600 mb-8">
             Start speaking today, upgrade as you grow
           </p>
 
           <%!-- Billing Toggle --%>
-          <div class="inline-flex items-center gap-4 bg-white dark:bg-gray-800 rounded-full p-1 shadow-lg">
+          <div class="inline-flex items-center gap-2 bg-white rounded-full p-1.5 shadow-lg border border-gray-200">
             <button
               phx-click="toggle_billing"
               phx-value-period="monthly"
               class={[
-                "px-6 py-2 rounded-full font-semibold transition-all duration-300",
+                "px-6 py-2.5 rounded-full font-semibold transition-all duration-300",
                 if(@billing_period == :monthly,
-                  do: "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md",
-                  else:
-                    "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                  do: "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md",
+                  else: "text-gray-600 hover:text-gray-900"
                 )
               ]}
             >
@@ -306,101 +308,91 @@
               phx-click="toggle_billing"
               phx-value-period="yearly"
               class={[
-                "px-6 py-2 rounded-full font-semibold transition-all duration-300",
+                "px-6 py-2.5 rounded-full font-semibold transition-all duration-300 relative",
                 if(@billing_period == :yearly,
-                  do: "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md",
-                  else:
-                    "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                  do: "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md",
+                  else: "text-gray-600 hover:text-gray-900"
                 )
               ]}
             >
               Yearly
-              <span class="ml-2 text-sm bg-green-500 text-white px-2 py-0.5 rounded-full">
-                Save 20%
+              <span class="absolute -top-1 -right-1 bg-green-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
+                20% OFF
               </span>
             </button>
           </div>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           <%= for plan <- @plans do %>
             <% is_pro = String.downcase(plan.name) == "pro" %>
-            <% is_dark = is_pro %>
 
             <div class={[
               "relative rounded-3xl p-8 transition-all duration-300",
-              if(is_dark,
-                do: "bg-gray-900 shadow-2xl transform scale-105 hover:scale-110",
-                else: "bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl"
+              if(is_pro,
+                do: "bg-gradient-to-br from-gray-900 to-gray-800 shadow-2xl transform scale-105 border-2 border-gray-700 hover:scale-110",
+                else: "bg-white shadow-xl hover:shadow-2xl border-2 border-gray-100 hover:border-gray-200"
               )
             ]}>
               <%= if is_pro do %>
                 <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span class="bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-bold shadow-lg">
+                  <span class="bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-5 py-1.5 rounded-full text-sm font-bold shadow-xl">
                     Most Popular
                   </span>
                 </div>
               <% end %>
 
-              <h3 class={[
-                "text-2xl font-bold mb-2",
-                if(is_dark, do: "text-white", else: "text-gray-900 dark:text-white")
-              ]}>
-                {plan.name}
-              </h3>
-
               <div class="mb-6">
-                <% price_display =
-                  if plan.price_cents && plan.price_cents > 0 do
-                    amount = Float.round(plan.price_cents / 100, 2)
-                    :erlang.float_to_binary(amount, [{:decimals, 2}])
-                  else
-                    "0"
-                  end %>
-                <span class={[
-                  "text-4xl font-bold",
-                  if(is_dark, do: "text-white", else: "text-gray-900 dark:text-white")
+                <h3 class={[
+                  "text-3xl font-bold mb-2",
+                  if(is_pro, do: "text-white", else: "text-gray-900")
                 ]}>
-                  ${price_display}
-                </span>
-                <span class={[
-                  if(is_dark, do: "text-blue-100", else: "text-gray-600 dark:text-gray-400")
-                ]}>
-                  /{plan.interval}
-                </span>
+                  {plan.name}
+                </h3>
+                <div class="flex items-baseline gap-2">
+                  <span class={[
+                    "text-5xl font-extrabold",
+                    if(is_pro, do: "text-white", else: "text-gray-900")
+                  ]}>
+                    ${plan.price_cents}
+                  </span>
+                  <span class={[
+                    "text-lg",
+                    if(is_pro, do: "text-gray-400", else: "text-gray-500")
+                  ]}>
+                    /{plan.interval}
+                  </span>
+                </div>
               </div>
 
               <%= if plan.description do %>
-                <div class={[
-                  "mb-6 text-sm whitespace-pre-line",
-                  if(is_dark, do: "text-blue-100", else: "text-gray-600 dark:text-gray-300")
+                <p class={[
+                  "mb-8 text-base leading-relaxed",
+                  if(is_pro, do: "text-gray-300", else: "text-gray-600")
                 ]}>
                   {plan.description}
-                </div>
+                </p>
               <% end %>
 
               <.link
                 navigate={~p"/subscriptions?plan_id=#{plan.stripe_price_id}"}
                 class={[
-                  "w-full py-3 px-6 rounded-full font-semibold transition-colors shadow-lg inline-flex justify-center",
-                  if(is_dark,
-                    do: "bg-white text-gray-900 hover:bg-gray-100",
-                    else: "bg-gray-900 text-white hover:bg-gray-800"
+                  "w-full py-4 px-6 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl inline-flex justify-center items-center gap-2 transform hover:scale-105",
+                  if(is_pro,
+                    do: "bg-white text-gray-900 hover:bg-gray-50",
+                    else: "bg-gradient-to-r from-gray-900 to-gray-800 text-white hover:from-gray-800 hover:to-gray-700"
                   )
                 ]}
               >
-                <%= if plan.trial_period_days && plan.trial_period_days > 0 do %>
-                  Start Free Trial
-                <% else %>
-                  Subscribe Now
-                <% end %>
+                Subscribe Now
+                <.icon name="hero-arrow-right" class="w-5 h-5" />
               </.link>
             </div>
           <% end %>
 
           <%= if Enum.empty?(@plans) do %>
             <div class="col-span-2 text-center py-12">
-              <p class="text-gray-600 dark:text-gray-300 text-lg">
+              <p class="text-gray-600 text-lg">
                 No subscription plans available at this time.
               </p>
             </div>
@@ -409,120 +401,138 @@
       </div>
     </section>
 
-    <%!-- FAQ --%>
-    <section class="py-20 sm:py-28 bg-white">
-      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-10">
-          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">Frequently asked questions</h2>
-        </div>
-        <div class="space-y-4">
-          <details class="group rounded-2xl border border-gray-200 p-6 bg-white">
-            <summary class="flex cursor-pointer list-none items-center justify-between">
-              <span class="text-base sm:text-lg font-semibold text-gray-900">
-                Do I need a credit card to start?
-              </span>
-              <.icon name="hero-plus" class="w-5 h-5 text-gray-500 group-open:hidden" /><.icon
-                name="hero-minus"
-                class="w-5 h-5 text-gray-500 hidden group-open:block"
-              />
-            </summary>
-            <p class="mt-3 text-gray-600">
-              No. Start free and upgrade anytime from within the app.
-            </p>
-          </details>
-          <details class="group rounded-2xl border border-gray-200 p-6 bg-white">
-            <summary class="flex cursor-pointer list-none items-center justify-between">
-              <span class="text-base sm:text-lg font-semibold text-gray-900">
-                Can I use this if I'm a beginner?
-              </span>
-              <.icon name="hero-plus" class="w-5 h-5 text-gray-500 group-open:hidden" /><.icon
-                name="hero-minus"
-                class="w-5 h-5 text-gray-500 hidden group-open:block"
-              />
-            </summary>
-            <p class="mt-3 text-gray-600">
-              Yes. Start in your native language and gradually transition to your target language.
-            </p>
-          </details>
-          <details class="group rounded-2xl border border-gray-200 p-6 bg-white">
-            <summary class="flex cursor-pointer list-none items-center justify-between">
-              <span class="text-base sm:text-lg font-semibold text-gray-900">
-                Does it work on mobile?
-              </span>
-              <.icon name="hero-plus" class="w-5 h-5 text-gray-500 group-open:hidden" /><.icon
-                name="hero-minus"
-                class="w-5 h-5 text-gray-500 hidden group-open:block"
-              />
-            </summary>
-            <p class="mt-3 text-gray-600">
-              Absolutely. Grab the Android or iOS app for the best experience.
-            </p>
-          </details>
-        </div>
-      </div>
-    </section>
-
     <%!-- Why Choose Us Section --%>
-    <section class="py-20 sm:py-28 bg-white">
+    <section class="py-24 sm:py-32 bg-white">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-          <h2 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">Why choose SpeakFirst</h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        <div class="text-center mb-16">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-100 text-green-700 text-sm font-medium mb-6">
+            <span>Why Choose Us</span>
+          </div>
+          <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-6">
+            Built for real learning
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
             A focused design that prioritizes real speaking, clear feedback, and steady progress.
           </p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-            <div class="w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center mb-4">
-              <.icon name="hero-microphone" class="w-5 h-5" />
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="group rounded-3xl border-2 border-gray-100 bg-gradient-to-br from-white to-blue-50/30 p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <.icon name="hero-microphone" class="w-8 h-8" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">Speak-first approach</h3>
-            <p class="text-gray-600">
-              Learn like kids: speak first, then layer grammar on top with context.
+            <h3 class="text-2xl font-bold text-gray-900 mb-3">Speak-first approach</h3>
+            <p class="text-gray-600 leading-relaxed">
+              Learn like children: speak first, then layer grammar naturally with context. No dry rules to memorize.
             </p>
           </div>
 
-          <div class="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-            <div class="w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center mb-4">
-              <.icon name="hero-light-bulb" class="w-5 h-5" />
+          <div class="group rounded-3xl border-2 border-gray-100 bg-gradient-to-br from-white to-purple-50/30 p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 text-white flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <.icon name="hero-light-bulb" class="w-8 h-8" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">Gentle corrections</h3>
-            <p class="text-gray-600">
-              Clear, in-flow feedback that helps you sound natural without breaking momentum.
+            <h3 class="text-2xl font-bold text-gray-900 mb-3">Gentle corrections</h3>
+            <p class="text-gray-600 leading-relaxed">
+              Clear, in-flow feedback that helps you sound natural without breaking momentum or confidence.
             </p>
           </div>
 
-          <div class="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-            <div class="w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center mb-4">
-              <.icon name="hero-chart-bar" class="w-5 h-5" />
+          <div class="group rounded-3xl border-2 border-gray-100 bg-gradient-to-br from-white to-indigo-50/30 p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 text-white flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <.icon name="hero-chart-bar" class="w-8 h-8" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">Progress you can feel</h3>
-            <p class="text-gray-600">
-              Short sessions, real conversations, measurable improvements—day by day.
+            <h3 class="text-2xl font-bold text-gray-900 mb-3">Progress you can feel</h3>
+            <p class="text-gray-600 leading-relaxed">
+              Short sessions, real conversations, measurable improvements—watch your confidence grow day by day.
             </p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <%!-- FAQ Section --%>
+    <section class="py-24 sm:py-32 bg-gradient-to-b from-white to-gray-50">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-sm font-medium mb-6">
+            <span>FAQ</span>
+          </div>
+          <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">
+            Frequently asked questions
+          </h2>
+        </div>
+
+        <div class="space-y-4">
+          <details class="group rounded-2xl border-2 border-gray-200 bg-white p-6 hover:border-gray-300 transition-colors shadow-sm hover:shadow-md">
+            <summary class="flex cursor-pointer list-none items-center justify-between">
+              <span class="text-lg font-semibold text-gray-900 pr-4">
+                Do I need a credit card to start?
+              </span>
+              <.icon name="hero-plus" class="w-6 h-6 text-gray-500 group-open:hidden flex-shrink-0" />
+              <.icon name="hero-minus" class="w-6 h-6 text-gray-500 hidden group-open:block flex-shrink-0" />
+            </summary>
+            <p class="mt-4 text-gray-600 leading-relaxed pl-0">
+              Yes, a credit card is required to subscribe to any plan. Choose a subscription plan that fits your learning needs and start speaking today.
+            </p>
+          </details>
+
+          <details class="group rounded-2xl border-2 border-gray-200 bg-white p-6 hover:border-gray-300 transition-colors shadow-sm hover:shadow-md">
+            <summary class="flex cursor-pointer list-none items-center justify-between">
+              <span class="text-lg font-semibold text-gray-900 pr-4">
+                Can I use this if I'm a beginner?
+              </span>
+              <.icon name="hero-plus" class="w-6 h-6 text-gray-500 group-open:hidden flex-shrink-0" />
+              <.icon name="hero-minus" class="w-6 h-6 text-gray-500 hidden group-open:block flex-shrink-0" />
+            </summary>
+            <p class="mt-4 text-gray-600 leading-relaxed pl-0">
+              Absolutely! Start in your native language and gradually transition to your target language. The AI adapts to your level naturally.
+            </p>
+          </details>
+
+          <details class="group rounded-2xl border-2 border-gray-200 bg-white p-6 hover:border-gray-300 transition-colors shadow-sm hover:shadow-md">
+            <summary class="flex cursor-pointer list-none items-center justify-between">
+              <span class="text-lg font-semibold text-gray-900 pr-4">
+                Does it work on mobile?
+              </span>
+              <.icon name="hero-plus" class="w-6 h-6 text-gray-500 group-open:hidden flex-shrink-0" />
+              <.icon name="hero-minus" class="w-6 h-6 text-gray-500 hidden group-open:block flex-shrink-0" />
+            </summary>
+            <p class="mt-4 text-gray-600 leading-relaxed pl-0">
+              Yes! Grab the Android or iOS app for the best mobile experience. Practice anywhere, anytime.
+            </p>
+          </details>
         </div>
       </div>
     </section>
 
     <%!-- Final CTA Section --%>
-    <section class="py-20 sm:py-32 bg-gray-900">
-      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-4xl sm:text-5xl font-bold text-white mb-6">
-          Start speaking today — your voice is your teacher
+    <section class="py-24 sm:py-32 bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900 relative overflow-hidden">
+      <div class="pointer-events-none absolute inset-0">
+        <div class="absolute top-0 right-0 h-96 w-96 bg-blue-500/20 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 h-96 w-96 bg-purple-500/20 rounded-full blur-3xl"></div>
+      </div>
+
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight">
+          Start speaking today
+          <span class="block mt-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            your voice is your teacher
+          </span>
         </h2>
-        <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-          Join thousands of learners who are mastering languages the natural way. No credit card required.
+        <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+          Join thousands of learners who are mastering languages the natural way. Choose your plan and start speaking today.
         </p>
         <button
           phx-click="start_free"
-          class="group inline-flex items-center justify-center px-10 py-5 text-lg font-semibold text-gray-900 bg-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 transform"
+          class="group inline-flex items-center justify-center px-10 py-5 text-lg font-semibold text-gray-900 bg-white rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 transform"
         >
-          Start Free
+          <span class="relative">
+            Get Started
+            <span class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-10 rounded-2xl blur-xl transition-opacity"></span>
+          </span>
           <.icon
             name="hero-arrow-right"
-            class="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform"
+            class="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform duration-300"
           />
         </button>
       </div>
