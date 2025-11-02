@@ -240,32 +240,43 @@
             Practice anywhere, anytime. Our mobile app delivers the same powerful learning experience optimized for your phone.
           </p>
 
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <%!-- Google Play Button --%>
             <.link
               navigate="https://play.google.com/store/apps/details?id=com.speakfirstai"
-              class="group flex items-center gap-3 px-6 py-4 bg-white hover:bg-gray-50 text-gray-900 rounded-2xl font-semibold shadow-xl transition-all duration-300 hover:scale-105 transform"
+              class="group relative flex items-center gap-4 px-6 py-4 bg-white hover:bg-gray-50 text-gray-900 rounded-2xl font-semibold shadow-xl transition-all duration-300 hover:scale-105 transform border-2 border-gray-200 hover:border-green-300 min-w-[200px]"
             >
-              <.icon
-                name="hero-device-phone-mobile"
-                class="w-7 h-7 group-hover:scale-110 transition-transform"
-              />
-              <div class="text-left">
-                <div class="text-sm text-gray-500">Download on</div>
-                <div class="font-bold text-lg">Google Play</div>
+              <div class="flex-shrink-0">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all">
+                  <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
+                  </svg>
+                </div>
               </div>
+              <div class="text-left flex-1">
+                <div class="text-[10px] text-gray-500 uppercase tracking-wider mb-0.5 font-medium">Get it on</div>
+                <div class="font-bold text-base text-gray-900 leading-tight">Google Play</div>
+              </div>
+              <.icon name="hero-chevron-right" class="w-5 h-5 text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all flex-shrink-0" />
             </.link>
+
+            <%!-- App Store Button --%>
             <.link
               navigate="https://apps.apple.com/app/speakfirst-ai/id0000000000"
-              class="group flex items-center gap-3 px-6 py-4 bg-white hover:bg-gray-50 text-gray-900 rounded-2xl font-semibold shadow-xl transition-all duration-300 hover:scale-105 transform"
+              class="group relative flex items-center gap-4 px-6 py-4 bg-white hover:bg-gray-50 text-gray-900 rounded-2xl font-semibold shadow-xl transition-all duration-300 hover:scale-105 transform border-2 border-gray-200 hover:border-blue-300 min-w-[200px]"
             >
-              <.icon
-                name="hero-device-phone-mobile"
-                class="w-7 h-7 group-hover:scale-110 transition-transform"
-              />
-              <div class="text-left">
-                <div class="text-sm text-gray-500">Download on</div>
-                <div class="font-bold text-lg">App Store</div>
+              <div class="flex-shrink-0">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all">
+                  <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.05,20.28C14.75,20.28 13.8,18.95 11.55,18.95C9.25,18.95 8.3,20.28 6,20.28C6,20.28 2,20.05 2,10.18C2,5.83 4.85,3.75 7.5,3.75C9.8,3.75 10.9,5 12.55,5C14.15,5 15.05,3.75 17.5,3.75C20.15,3.75 23,5.83 23,10.18C23,20.05 19,20.28 19,20.28M12.5,2C13.2,1.35 14.15,1 15.2,1C15.5,2.2 15.05,3.25 14.35,3.9C13.65,4.55 12.7,4.9 11.65,4.9C11.4,3.65 11.85,2.65 12.5,2Z" />
+                  </svg>
+                </div>
               </div>
+              <div class="text-left flex-1">
+                <div class="text-[10px] text-gray-500 uppercase tracking-wider mb-0.5 font-medium">Download on the</div>
+                <div class="font-bold text-base text-gray-900 leading-tight">App Store</div>
+              </div>
+              <.icon name="hero-chevron-right" class="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all flex-shrink-0" />
             </.link>
           </div>
         </div>

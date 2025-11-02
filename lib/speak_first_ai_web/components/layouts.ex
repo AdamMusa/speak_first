@@ -69,6 +69,13 @@ defmodule SpeakFirstAiWeb.Layouts do
           <div class="hidden md:flex items-center gap-3">
             <%= if @current_scope && @current_scope.user do %>
               <.link
+                navigate={~p"/users/settings"}
+                class="px-5 py-2.5 text-sm font-semibold rounded-2xl border-2 border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50 transition-all duration-300 hover:scale-105 transform shadow-sm inline-flex items-center gap-2"
+              >
+                <.icon name="hero-user-circle" class="w-5 h-5" />
+                Profile
+              </.link>
+              <.link
                 navigate={~p"/admin"}
                 class="group relative px-5 py-2.5 text-sm font-semibold rounded-2xl bg-gradient-to-r from-gray-900 to-gray-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 transform overflow-hidden"
               >
@@ -138,6 +145,13 @@ defmodule SpeakFirstAiWeb.Layouts do
             </nav>
             <div class="pt-2 flex flex-col gap-2 border-t border-gray-200">
               <%= if @current_scope && @current_scope.user do %>
+                <.link
+                  navigate={~p"/users/settings"}
+                  class="w-full px-4 py-3 text-sm font-semibold rounded-2xl border-2 border-gray-200 text-gray-700 text-center hover:border-gray-300 hover:bg-gray-50 transition-all duration-300 active:scale-95 transform inline-flex items-center justify-center gap-2"
+                >
+                  <.icon name="hero-user-circle" class="w-5 h-5" />
+                  Profile
+                </.link>
                 <.link
                   navigate={~p"/admin"}
                   class="w-full px-4 py-3 text-sm font-semibold rounded-2xl bg-gradient-to-r from-gray-900 to-gray-800 text-white text-center shadow-lg transition-all duration-300 active:scale-95 transform"
