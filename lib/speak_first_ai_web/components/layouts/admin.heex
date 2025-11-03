@@ -58,6 +58,12 @@
               current_path={assigns[:current_path] || ""}
             />
             <.admin_nav_link
+              href={~p"/admin/courses"}
+              icon="hero-book-open"
+              label="Courses"
+              current_path={assigns[:current_path] || ""}
+            />
+            <.admin_nav_link
               href={~p"/admin/subscription_plans"}
               icon="hero-credit-card"
               label="Subscription Plans"

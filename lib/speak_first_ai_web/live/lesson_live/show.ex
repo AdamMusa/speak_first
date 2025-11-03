@@ -23,11 +23,22 @@ defmodule SpeakFirstAiWeb.LessonLive.Show do
       <.list>
         <:item title="Title">{@lesson.title}</:item>
         <:item title="Description">{@lesson.description}</:item>
+        <:item title="Course">
+          {cond do
+            @lesson.course_id && @lesson.course ->
+              "#{@lesson.course.title} (ID: #{@lesson.course_id})"
+            @lesson.course_id ->
+              "Course ID: #{@lesson.course_id}"
+            true ->
+              "No course assigned"
+          end}
+        </:item>
         <:item title="Lesson type">{@lesson.lesson_type}</:item>
         <:item title="Lesson difficulty">{@lesson.lesson_difficulty}</:item>
         <:item title="Estimated minutes">{@lesson.estimated_minutes}</:item>
         <:item title="Key vocabulary">{@lesson.key_vocabulary}</:item>
         <:item title="Is active">{@lesson.is_active}</:item>
+        <:item title="Is completed">{@lesson.is_completed}</:item>
       </.list>
     </div>
     """
@@ -39,10 +50,12 @@ defmodule SpeakFirstAiWeb.LessonLive.Show do
       Lessons.subscribe_lessons(socket.assigns.current_scope)
     end
 
+    lesson = Lessons.get_lesson!(socket.assigns.current_scope, id)
+
     {:ok,
      socket
      |> assign(:page_title, "Show Lesson")
-     |> assign(:lesson, Lessons.get_lesson!(socket.assigns.current_scope, id))}
+     |> assign(:lesson, SpeakFirstAi.Repo.preload(lesson, :course))}
   end
 
   @impl true

@@ -10,7 +10,10 @@ defmodule SpeakFirstAi.Lessons.Lesson do
     field :estimated_minutes, :integer
     field :key_vocabulary, :map
     field :is_active, :boolean, default: false
+    field :is_completed, :boolean, default: false
     field :user_id, :id
+
+    belongs_to :course, SpeakFirstAi.Courses.Course
 
     timestamps(type: :utc_datetime)
   end
@@ -25,7 +28,9 @@ defmodule SpeakFirstAi.Lessons.Lesson do
       :lesson_difficulty,
       :estimated_minutes,
       :key_vocabulary,
-      :is_active
+      :is_active,
+      :is_completed,
+      :course_id
     ])
     |> validate_required([
       :title,

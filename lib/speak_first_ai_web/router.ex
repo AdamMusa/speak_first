@@ -115,6 +115,14 @@ defmodule SpeakFirstAiWeb.Router do
       live "/admin/lessons/:id", LessonLive.Show, :show
       live "/admin/lessons/:id/show/edit", LessonLive.Form, :edit
 
+      ## Courses
+      live "/admin/courses", CourseLive.Index, :index
+      live "/admin/courses/new", CourseLive.Form, :new
+      live "/admin/courses/:id/edit", CourseLive.Form, :edit
+
+      live "/admin/courses/:id", CourseLive.Show, :show
+      live "/admin/courses/:id/show/edit", CourseLive.Form, :edit
+
       ## Subscription Plans
       live "/admin/subscription_plans", SubscriptionPlanLive.Index, :index
       live "/admin/subscription_plans/new", SubscriptionPlanLive.Form, :new

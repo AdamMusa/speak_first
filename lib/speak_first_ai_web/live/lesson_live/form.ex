@@ -3,6 +3,7 @@ defmodule SpeakFirstAiWeb.LessonLive.Form do
 
   alias SpeakFirstAi.Lessons
   alias SpeakFirstAi.Lessons.Lesson
+  alias SpeakFirstAi.Courses
 
   @impl true
   def render(assigns) do
@@ -17,10 +18,18 @@ defmodule SpeakFirstAiWeb.LessonLive.Form do
         <.form for={@form} id="lesson-form" phx-change="validate" phx-submit="save" class="mt-8 space-y-6">
           <.input field={@form[:title]} type="text" label="Title" />
           <.input field={@form[:description]} type="textarea" label="Description" />
+          <.input
+            field={@form[:course_id]}
+            type="select"
+            label="Course"
+            prompt="Select a course"
+            options={@course_options}
+          />
           <.input field={@form[:lesson_type]} type="text" label="Lesson type" />
           <.input field={@form[:lesson_difficulty]} type="text" label="Lesson difficulty" />
           <.input field={@form[:estimated_minutes]} type="number" label="Estimated minutes" />
           <.input field={@form[:is_active]} type="checkbox" label="Is active" />
+          <.input field={@form[:is_completed]} type="checkbox" label="Is completed" />
           <div class="mt-8 flex items-center gap-4 pt-6 border-t border-gray-200">
             <button
               type="submit"
@@ -59,19 +68,27 @@ defmodule SpeakFirstAiWeb.LessonLive.Form do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     lesson = Lessons.get_lesson!(socket.assigns.current_scope, id)
+    courses = Courses.list_courses(socket.assigns.current_scope)
+    course_options = Enum.map(courses, fn course -> {course.title, course.id} end)
 
     socket
     |> assign(:page_title, "Edit Lesson")
     |> assign(:lesson, lesson)
+    |> assign(:courses, courses)
+    |> assign(:course_options, course_options)
     |> assign(:form, to_form(Lessons.change_lesson(socket.assigns.current_scope, lesson)))
   end
 
   defp apply_action(socket, :new, _params) do
     lesson = %Lesson{user_id: socket.assigns.current_scope.user.id}
+    courses = Courses.list_courses(socket.assigns.current_scope)
+    course_options = Enum.map(courses, fn course -> {course.title, course.id} end)
 
     socket
     |> assign(:page_title, "New Lesson")
     |> assign(:lesson, lesson)
+    |> assign(:courses, courses)
+    |> assign(:course_options, course_options)
     |> assign(:form, to_form(Lessons.change_lesson(socket.assigns.current_scope, lesson)))
   end
 
