@@ -87,6 +87,6 @@ config :phoenix_live_view,
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
 
-# Stripe configuration for development
+# Configure Stripe
 config :stripity_stripe,
-  api_key: System.get_env("STRIPE_SECRET_KEY") || "sk_test_your_key_here"
+  api_key: "sk_test_51SAqFtRfW4UqsoNkmp0wzwSBtgjCy5JTkWPlpLsWkUfiJ8VNileA85mioocECQncw09xfjLNM1OXbzHvsZE300bo00mm5J0hTT"

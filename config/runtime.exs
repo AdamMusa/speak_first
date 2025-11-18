@@ -18,6 +18,11 @@ import Config
 # script that automatically sets the env var above.
 if System.get_env("PHX_SERVER") do
   config :speak_first_ai, SpeakFirstAiWeb.Endpoint, server: true
+  # Configure Stripe
+  config :stripity_stripe,
+    api_key: System.get_env("STRIPE_SECRET_KEY")
+
+
 end
 
 if config_env() == :prod do
@@ -116,4 +121,5 @@ if config_env() == :prod do
   #     config :swoosh, :api_client, Swoosh.ApiClient.Req
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+
 end

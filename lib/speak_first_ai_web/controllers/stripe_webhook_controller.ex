@@ -75,6 +75,36 @@ defmodule SpeakFirstAiWeb.StripeWebhookController do
 
   defp secure_compare(_, _), do: false
 
+  # Normalize Stripe structs to maps with string keys
+  defp normalize_stripe_object(obj) when is_map(obj) do
+    # If it's a struct, convert to map and then to string keys
+    if Map.has_key?(obj, :__struct__) do
+      obj
+      |> Map.from_struct()
+      |> Enum.map(fn {k, v} -> {Atom.to_string(k), normalize_stripe_value(v)} end)
+      |> Map.new()
+    else
+      # Already a map, just ensure string keys
+      Enum.map(obj, fn
+        {k, v} when is_atom(k) -> {Atom.to_string(k), normalize_stripe_value(v)}
+        {k, v} -> {k, normalize_stripe_value(v)}
+      end)
+      |> Map.new()
+    end
+  end
+
+  defp normalize_stripe_object(obj), do: obj
+
+  defp normalize_stripe_value(value) when is_map(value) do
+    normalize_stripe_object(value)
+  end
+
+  defp normalize_stripe_value(value) when is_list(value) do
+    Enum.map(value, &normalize_stripe_value/1)
+  end
+
+  defp normalize_stripe_value(value), do: value
+
   # Event processing
   defp process_event(%{"type" => type, "data" => %{"object" => obj}}) do
     case type do
@@ -85,6 +115,8 @@ defmodule SpeakFirstAiWeb.StripeWebhookController do
       "invoice.payment_succeeded" -> handle_payment_succeeded(obj)
       "invoice.paid" -> handle_payment_succeeded(obj)
       "invoice_payment.paid" -> handle_invoice_payment_paid(obj)
+      "checkout.session.completed" -> handle_checkout_session_completed(obj)
+      "charge.succeeded" -> :ok
       "customer.subscription.paused" -> handle_pause_resume(obj, :paused)
       "customer.subscription.resumed" -> handle_pause_resume(obj, :active)
       "customer.subscription.trial_will_end" -> :ok
@@ -132,7 +164,20 @@ defmodule SpeakFirstAiWeb.StripeWebhookController do
   end
 
   defp handle_invoice_payment_paid(obj) do
-    handle_invoice_like(obj, "active")
+    # invoice_payment.paid has a different structure - we need to fetch the invoice
+    invoice_id = obj["invoice"]
+
+    if invoice_id do
+      case Stripe.Invoice.retrieve(invoice_id) do
+        {:ok, invoice} ->
+          normalized_invoice = normalize_stripe_object(invoice)
+          handle_invoice_like(normalized_invoice, "active")
+        {:error, _} ->
+          :ok
+      end
+    else
+      :ok
+    end
   end
 
   defp handle_invoice_like(invoice, status) do
@@ -147,6 +192,40 @@ defmodule SpeakFirstAiWeb.StripeWebhookController do
         plan: invoice |> get_in(["lines", "data"]) |> List.wrap() |> List.first() |> then(&(&1 && &1["description"])) ,
         current_period_end: invoice |> get_in(["lines", "data"]) |> List.wrap() |> List.first() |> then(&(&1 && get_in(&1, ["period", "end"]))) |> unix_to_datetime()
       })
+    end
+  end
+
+  defp handle_checkout_session_completed(obj) do
+    # For subscription mode, retrieve the subscription from the invoice
+    if obj["mode"] == "subscription" do
+      invoice_id = obj["invoice"]
+      customer_id = obj["customer"]
+
+      if invoice_id && customer_id do
+        case Stripe.Invoice.retrieve(invoice_id) do
+          {:ok, invoice} ->
+            normalized_invoice = normalize_stripe_object(invoice)
+            sub_id = normalized_invoice["subscription"]
+
+            if sub_id do
+              case Stripe.Subscription.retrieve(sub_id) do
+                {:ok, subscription} ->
+                  normalized_subscription = normalize_stripe_object(subscription)
+                  handle_subscription_upsert(normalized_subscription)
+                {:error, _} ->
+                  :ok
+              end
+            else
+              :ok
+            end
+          {:error, _} ->
+            :ok
+        end
+      else
+        :ok
+      end
+    else
+      :ok
     end
   end
 

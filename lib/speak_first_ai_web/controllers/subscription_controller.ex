@@ -311,9 +311,9 @@ defmodule SpeakFirstAiWeb.SubscriptionController do
         }
       ],
       mode: "subscription",
-      subscription_data: %{
-        trial_period_days: plan.trial_period_days || 7
-      },
+      # subscription_data: %{
+      #   trial_period_days: plan.trial_period_days || 7
+      # },
       success_url: build_url(~p"/subscriptions/success"),
       cancel_url: build_url(~p"/subscriptions/cancel")
     })
